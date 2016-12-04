@@ -1,0 +1,13 @@
+#index .logoMc{
+	width: 150px;
+  margin-left: 20px;
+}
+
+#index .button{
+	background-color: #262626;
+	color: #999999;
+}
+
+#index .button:hover{
+	color: #fff;
+}

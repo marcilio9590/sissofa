@@ -1,0 +1,47 @@
+<section class="container">
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<h1>Cadastro de Projetos</h1>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<form name="cadProjeto">
+				 <div class="row">
+				 	<div class="col-md-6">
+				 		 <label for="nome">Nome do cliente</label>
+				    <input type="text" ng-required="true" class="form-control" ng-model="nomeCli">
+				  
+				 	</div>
+				 	<div class="col-md-6">
+				 		   <label for="telefone">Telefone do cliente</label>
+				    <input type="text" ng-required="true" class="form-control" ng-model="telCli">
+				  
+				 	</div>
+				  </div> 
+				  <div class="row">
+				 	<div class="col-md-12">
+				 		 <label for="descricao">Descrição do projeto</label>
+				    <textarea type="text" ng-required="true" class="form-control" ng-model="descricaoProj">
+				  	</textarea>
+				 	</div>
+				  </div>
+
+				 
+				<div class="row">
+				<div class="col-md-8"></div>
+				<div class="col-md-2">
+					<br><button class="btn button" ng-disabled="cadProjeto.$invalid">Confirmar</button>
+				</div>
+				  	
+		   	    </div>
+			</form>
+			
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+</section>
