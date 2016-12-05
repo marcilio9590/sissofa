@@ -1,47 +1,53 @@
-<section class="container">
-	<div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4">
-			<h1>Cadastro de Projetos</h1>
+	<section class="container" id="cadProjeto">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<h1>Cadastro de Projetos</h1>
+			</div>
+			<div class="col-md-4"></div>
 		</div>
-		<div class="col-md-4"></div>
-	</div>
-	<div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4">
-			<form name="cadProjeto">
-				 <div class="row">
-				 	<div class="col-md-6">
-				 		 <label for="nome">Nome do cliente</label>
-				    <input type="text" ng-required="true" class="form-control" ng-model="nomeCli">
-				  
-				 	</div>
-				 	<div class="col-md-6">
-				 		   <label for="telefone">Telefone do cliente</label>
-				    <input type="text" ng-required="true" class="form-control" ng-model="telCli">
-				  
-				 	</div>
-				  </div> 
-				  <div class="row">
-				 	<div class="col-md-12">
-				 		 <label for="descricao">Descrição do projeto</label>
-				    <textarea type="text" ng-required="true" class="form-control" ng-model="descricaoProj">
-				  	</textarea>
-				 	</div>
-				  </div>
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<form name="cadProjeto">
+					 <div class="row">
+					 	<div class="col-md-6">
+					 		 <label for="nome">Nome do cliente</label>
+					    <input type="text" ng-required="true" class="form-control" ng-model="nomeCli">
+					  
+					 	</div>
+					 	<div class="col-md-6">
+			 		   		<label for="telefone">Telefone do cliente</label>
+				    		<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="telCli">
+					  
+					 	</div>
+					  </div> 
+					  <div class="row">
+					 		<div class="col-md-12">
+				 		 		<label for="descricao">Descrição do projeto</label>
+							    <textarea type="text" ng-minlength="10" ng-required="true" name="descricaoProj" class="form-control" ng-model="descricaoProj">
+							  	</textarea>
+					 		</div>
+					  </div>
 
-				 
-				<div class="row">
-				<div class="col-md-8"></div>
-				<div class="col-md-2">
-					<br><button class="btn button" ng-disabled="cadProjeto.$invalid">Confirmar</button>
+					<div class="row">
+					<div class="col-md-8"></div>
+					<div class="col-md-2">
+						<br><button class="btn button" ng-disabled="cadProjeto.$invalid">Confirmar</button>
+					</div>
+					  	
+			   	    </div>
+				</form>
+				
+				<div ng-show="cadProjeto.telCli.$invalid && !cadProjeto.telCli.$pristine" class="erroTel">
+					<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> O telefone deve ser digitado da seguinte forma #####-####</label>
 				</div>
-				  	
-		   	    </div>
-			</form>
-			
+				<div ng-show="cadProjeto.descricaoProj.$invalid && !cadProjeto.descricaoProj.$pristine" class="erroTel">
+					<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> A descrição deve conter no minimo 10 caracteres</label>
+				</div>
+				
+			</div>
+			<div class="col-md-4"></div>
 		</div>
-		<div class="col-md-4"></div>
-	</div>
-	
-</section>
+		
+	</section>

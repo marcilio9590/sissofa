@@ -24,4 +24,21 @@
 	bottom: 15px;
 	margin-left: -10px;
 }
+#index .icone{
+	font-size: 25pt;
+}
+#index .fechar{
+	position: absolute;
+	margin-left: -20px;
+	margin-top: -10px;
+	cursor: pointer;
+}
 
+#cadProjeto .erroTel{
+	font-size: 15pt;
+	border:1px solid #20B2AA;
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: 10px;
+	background-color: #20B2AA;
+}
