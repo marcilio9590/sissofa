@@ -19,7 +19,15 @@ app.get('/materiais', function(req, res){
 	res.redirect('/#/materiais');
 });
 
+app.get('/listarProjetos', function(req, res){
+	res.redirect('/#/listarProjetos');
+});
+
+app.get('/listarMateriais', function(req, res){
+	res.redirect('/#/listarMateriais');
+});
+
 
 app.listen(3000, function(){
-	console.log('Servidor no ar!');
+	console.log('Servidor rodando na porta 3000!');
 });

@@ -17,7 +17,7 @@
 	<base href="/">
 </head>
 <body id="index" ng-controller="indexCTRL">
-	
+	<img src="img/logoSofa.png" class="logoSofa" alt="">
 	<div class="navigation">
 	  <ul>
 	    <li class="has-sub"><a href="/"><i class="fa fa-home"></i> Início</a>
@@ -26,13 +26,13 @@
 	    <li class="has-sub"> <a href="#"><i class="fa fa-folder-open "></i> Projetos</a>
 	      <ul>
 	        <li><a href="/projeto">Cadastrar Projetos</a></li>
-	        <li><a href="#">Listar Projetos</a></li>
+	        <li><a href="/listarProjetos">Listar Projetos</a></li>
 	      </ul>
 	    </li>
 	    <li class="has-sub"> <a href="#"><i class="fa fa-wrench"></i> Materiais</a>
 	      <ul>
 	        <li><a href="/materiais">Cadastrar Materiais</a></li>
-	        <li><a href="#">Listar Materiais</a></li>
+	        <li><a href="/listarMateriais">Listar Materiais</a></li>
 	      </ul>
 	    </li>
 	  </ul>
@@ -49,6 +49,8 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="angular/angular.min.js"></script>
 	<script src="angular/rotas.js"></script>
+	<script src="angular/paginacao/dirPagination.js"></script>
+
 	
 	
 	<script src="angular/aplicacao.js"></script>

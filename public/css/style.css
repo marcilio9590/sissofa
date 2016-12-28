@@ -1,14 +1,23 @@
+.titulos{
+	font-style: italic;
+	font-weight: bolder;
+	color: #275e27;
+}
 #index .logoMc{
 	width: 150px;
   margin-left: 20px;
 }
 
 #index .button{
-	background-color: #262626;
-	color: #999999;
+	border: 3px solid #275e27;
+	color: #275e27;
+	background-color: #fff;
+	font-weight: bold;
+	border-radius: 10px;
 }
 
 #index .button:hover{
+	background-color: #275e27;
 	color: #fff;
 }
 
@@ -41,4 +50,15 @@
 	padding: 10px;
 	margin-top: 10px;
 	background-color: #20B2AA;
+}
+
+#index .logoSofa{
+	float: right;
+	width: 200px;
+	height: 50px;
+	margin-right: 20px;
+	margin-top: 10px;
+}
+th{
+	cursor: pointer;
 }
