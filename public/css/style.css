@@ -53,11 +53,12 @@
 }
 
 #index .logoSofa{
-	float: right;
+	
 	width: 200px;
 	height: 50px;
-	margin-right: 20px;
-	margin-top: 10px;
+	margin-left:50px;
+	margin-top: -15px;
+
 }
 th{
 	cursor: pointer;

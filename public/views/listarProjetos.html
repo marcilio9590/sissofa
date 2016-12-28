@@ -1,0 +1,51 @@
+<section class="container-fluid">
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6" align="center">
+			<h1 class="titulos">Lista de projetos</h1>
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+	<br>
+
+		<div class="row">
+			<div class="col-md-12" align="right"><input placeholder="Pesquisar" type="text" style="width: 200px; margin-bottom: 10px;" ng-model="search" class="form-control" /></div>
+		</div>
+		
+		
+	
+	
+		<div class="row">
+			<div class="col-md-12" align="center">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+							<th>Nome do projeto</th>
+							<th ng-click="sort('nomeClie')">Nome do cliente <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
+							<th>Telefone do cliente</th>
+							<th>Descrição do projeto</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:5">
+							<td>{{array.codigo}}</td>
+							<td>{{array.nomeProj}}</td>
+							<td>{{array.nomeClie}}</td>
+							<td>{{array.telCli}}</td>
+							<td>{{array.descrProj}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<dir-pagination-controls 
+						max-size="5"
+						direction-links="true"
+						boundary-links="true" >
+					</dir-pagination-controls>
+			</div>
+		</div>
+		
+		
+	
+</section>
