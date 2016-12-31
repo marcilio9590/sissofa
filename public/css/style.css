@@ -1,7 +1,7 @@
 .titulos{
 	font-style: italic;
 	font-weight: bolder;
-	color: #275e27;
+	color: #222222;
 }
 #index .logoMc{
 	width: 150px;
@@ -62,4 +62,12 @@
 }
 th{
 	cursor: pointer;
+}
+#acoes{
+	font-size: 20px; 
+	cursor: pointer;
+}
+thead{
+	background:#222222 url(../images/header_bg.png) repeat-x;
+	color: #fff;
 }
