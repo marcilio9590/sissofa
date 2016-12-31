@@ -7,20 +7,40 @@
 		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4"></div>
-		<div class="col-xs-4">
-			<form name="cadMaterial">
-				 <div class="form-group">
+		<div class="col-xs-2"></div>
+		<div class="col-xs-8">
+			<div class="row">
+				<form name="cadMaterial">
+				<div class="col-md-6">
+					<div class="form-group">
 				    <label for="nome">Nome</label>
-				    <input type="text" ng-required="true" class="form-control" ng-model="nome">
+				    <input type="text" ng-required="true" class="form-control" ng-model="produto.nome">
 				  </div>
+				</div>
+				 
+				<div class="col-md-6">
+					<div class="form-group">
+				    <label for="preco">Preço</label>
+				    <input type="text" ng-required="true" class="form-control" ng-model="produto.preco">
+				  </div>
+				</div>
 				<div class="form-group">
-				  	<button class="btn button" ng-disabled="cadMaterial.$invalid">Confirmar</button>
+				<div class="row">
+					<div class="col-md-9"></div>
+					<div class="col-md-3">
+						<button class="btn btn-success" ng-disabled="cadMaterial.$invalid">Confirmar</button>
+					</div>
+					
+				</div>
 		   	    </div>
 			</form>
+				
+				
+			</div>
+			
 			
 		</div>
-		<div class="col-xs-4"></div>
+		<div class="col-xs-2"></div>
 	</div>
 	
 </section>

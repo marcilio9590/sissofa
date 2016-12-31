@@ -1,23 +1,19 @@
 <section class="container-fluid">
 	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6" align="center">
+		<div class="col-md-5">
 			<h1 class="titulos">Lista de projetos</h1>
 		</div>
-		<div class="col-md-3"></div>
+		<div class="col-md-4">
+			
+		</div>
+		<div class="col-md-3">
+			<div class="col-md-12" align="right"><input placeholder="Pesquisar" type="text" style="margin-top: 30px" ng-model="search" class="form-control" /></div>
+		</div>
 	</div>
-	<br>
 
 		<div class="row">
-			<div class="col-md-12" align="right"><input placeholder="Pesquisar" type="text" style="width: 200px; margin-bottom: 10px;" ng-model="search" class="form-control" /></div>
-		</div>
-		
-		
-	
-	
-		<div class="row">
 			<div class="col-md-12" align="center">
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered table-striped table-condensed">
 					<thead>
 						<tr>
 							<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
@@ -25,21 +21,29 @@
 							<th ng-click="sort('nomeClie')">Nome do cliente <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
 							<th>Telefone do cliente</th>
 							<th>Descrição do projeto</th>
-							
+							<th>Ações</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:5">
+						<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:10">
 							<td>{{array.codigo}}</td>
 							<td>{{array.nomeProj}}</td>
 							<td>{{array.nomeClie}}</td>
 							<td>{{array.telCli}}</td>
 							<td>{{array.descrProj}}</td>
+							<td>
+								<button class="btn btn-sm btn-primary btn-xs" title="Editar">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+								<button class="btn btn-danger btn-xs" title="Excluir">
+									<i class="fa fa-trash-o" aria-hidden="true"></i>
+								</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 				<dir-pagination-controls 
-						max-size="5"
+						max-size="10"
 						direction-links="true"
 						boundary-links="true" >
 					</dir-pagination-controls>
