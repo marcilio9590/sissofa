@@ -34,6 +34,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 			}else{
 
 				vm.select.novaQtd = qtdProjeto;
+				vm.select.quantidade = vm.select.quantidade - qtdProjeto;
 				vm.adicionadosProjeto.push(vm.select);	
 				vm.select.qtdProjeto = '';
 			}
@@ -46,6 +47,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				}, 3000);
 			}else{
 				vm.select.novoMetro = qtdProjeto;
+				vm.select.metro = vm.select.metro - qtdProjeto;
 				vm.adicionadosProjeto.push(vm.select);
 				vm.select.qtdProjeto = '';
 			}
