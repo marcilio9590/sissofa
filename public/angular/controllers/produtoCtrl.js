@@ -3,6 +3,7 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 	vm.produto = {};
 	vm.cad = false;
 	vm.flag = false;
+	vm.sortKey = 'codigo';
 
 	vm.isSortUp = function(fieldName){
 		return vm.sortKey === fieldName && !vm.reverse;
@@ -31,9 +32,7 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 			url: '/estoque/listar'
 		}).then(function successCallback(response) {
 			vm.data = produtosFactory.convertEstoqueToFront(response.data);	
-
 		}, function errorCallback(response){
-
 			alert(response.data);
 		});
 	}
@@ -48,6 +47,7 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 			$timeout(function() {
 				vm.cad = false;
 			}, 3000);	
+			document.getElementById("nome").focus();
 		}, function errorCallback(response){
 			alert(response.data);
 		});
@@ -57,7 +57,7 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 
 	vm.salvarEdicao = function(obj){
 		var objConvert = produtosFactory.convertEstoqueToBack(obj);
-			$http({
+		$http({
 			method: 'PUT',
 			url: '/estoque/editarItem/'+obj.codigo,
 			data:objConvert
@@ -65,10 +65,10 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 			vm.edit = true;
 			vm.closeModal();
 			vm.listarEstoque();
-			vm.idEditado = obj.codigo;
+			vm.idItem = obj.codigo;
 			$timeout(function() {
 				vm.edit = false;
-				vm.idEditado = '';
+				vm.idItem = '';
 			}, 3000);	
 		}, function errorCallback(response){
 			alert(response.data);
@@ -80,7 +80,13 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 			method: 'DELETE',
 			url: '/estoque/delItem/'+id
 		}).then(function successCallback(response) {
+			vm.idItem = id;
+			vm.remove = true;
 			vm.listarEstoque();
+			$timeout(function() {
+				vm.remove = false;
+				vm.idItem = '';
+			}, 3000);
 		}, function errorCallback(response){
 			alert(response.data);
 		});
@@ -127,8 +133,9 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 	}
 
 	function activate(){
-		vm.listarEstoque();
+		vm.listarEstoque()
 	}
 
 	activate();
+	
 });

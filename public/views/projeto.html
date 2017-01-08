@@ -1,59 +1,135 @@
 	<section class="container-fluid" id="cadProjeto">
-		<div class="row">
-			<div class="col-md-3"></div>
-			<div class="col-md-6">
-				<h1 class="titulos" align="center">Cadastro de Projetos</h1>
+		<div ng-if="step1">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<h1 class="titulos" align="center">Cadastro de Projetos</h1>
+				</div>
+				<div class="col-md-3"></div>
 			</div>
-			<div class="col-md-3"></div>
-		</div>
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<form name="cadProjeto">
-					 <div class="row">
-					 	<div class="col-md-6">
-					 		 <label for="nome">Nome do cliente</label>
-					    <input type="text" ng-required="true" class="form-control" ng-model="nomeCli">
-					  
-					 	</div>
-					 	<div class="col-md-6">
-			 		   		<label for="telefone">Telefone do cliente</label>
-				    		<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="telCli">
-					  
-					 	</div>
-					  </div> 
-					  <div class="row">
-					 		<div class="col-md-12">
-				 		 		<label for="descricao">Nome do projeto</label>
-							    <input type="text" ng-required="true" name="nomeProj" class="form-control" ng-model="nomeProj"/>
-							  	
-					 		</div>
-					  </div>
-					  <div class="row">
-					 		<div class="col-md-12">
-				 		 		<label for="descricao">Descrição do projeto</label>
-							    <textarea type="text" ng-minlength="10" ng-required="true" name="descricaoProj" class="form-control" ng-model="descricaoProj">
-							  	</textarea>
-					 		</div>
-					  </div>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<form name="cadProjeto">
+						<div class="row">
+							<div class="col-md-6">
+								<label for="nome">Nome do cliente</label>
+								<input type="text" ng-required="true" class="form-control" ng-model="projeto.nomeCli">
 
-					<div class="row">
-					<div class="col-md-8"></div>
-					<div class="col-md-2">
-						<br><button class="btn btn-success" ng-disabled="cadProjeto.$invalid">Confirmar</button>
+							</div>
+							<div class="col-md-6">
+								<label for="telefone">Telefone do cliente</label>
+								<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="projeto.telCli">
+
+							</div>
+						</div> 
+						<div class="row">
+							<div class="col-md-12">
+								<label for="descricao">Endereço do Cliente</label>
+								<input type="text" ng-required="true" name="nomeProj" class="form-control" ng-model="projeto.endCli"/>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<label for="descricao">Nome do projeto</label>
+								<input type="text" ng-required="true" name="nomeProj" class="form-control" ng-model="projeto.nomeProj"/>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<label for="descricao">Descrição do projeto</label>
+								<textarea type="text" ng-minlength="10" ng-required="true" name="descricaoProj" class="form-control" ng-model="projeto.descricaoProj">
+								</textarea>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-8"></div>
+							<div class="col-md-2">
+								<br><button class="btn btn-success" ng-click="continuar()" ng-disabled="">Continuar</button>
+							</div>
+						</div>
+					</form>
+
+					<div ng-show="cadProjeto.telCli.$invalid && !cadProjeto.telCli.$pristine" class="erroTel">
+						<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> O telefone deve ser digitado da seguinte forma #####-####</label>
 					</div>
-					  	
-			   	    </div>
-				</form>
-				
-				<div ng-show="cadProjeto.telCli.$invalid && !cadProjeto.telCli.$pristine" class="erroTel">
-					<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> O telefone deve ser digitado da seguinte forma #####-####</label>
+					<div ng-show="cadProjeto.descricaoProj.$invalid && !cadProjeto.descricaoProj.$pristine" class="erroTel">
+						<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> A descrição deve conter no minimo 10 caracteres</label>
+					</div>
+
 				</div>
-				<div ng-show="cadProjeto.descricaoProj.$invalid && !cadProjeto.descricaoProj.$pristine" class="erroTel">
-					<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> A descrição deve conter no minimo 10 caracteres</label>
-				</div>
-				
+				<div class="col-md-2"></div>
 			</div>
-			<div class="col-md-2"></div>
 		</div>
+		<div ng-if="step2">
+			<center>
+				<h1>Itens do projeto</h1>
+			</center>	
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-4 caixaEsquerda">
+						<h5 class="titulos">Itens Cadastradados</h5>
+						<hr>
+						<div class="boxIntLeft">
+							
+							<div class="row itemsEstoque" ng-repeat="x in listEstoque">
+								<div class="col-lg-6">
+									<div class="input-group">
+										<span class="input-group-addon">
+											<input ng-click="selecionar(x)" name="item" type="radio" aria-label="Checkbox for following text input">
+										</span>
+										<label class="form-control" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4 caixaMeio">
+						<div ng-if="mostra">
+							<h5 class="titulos">Preencha Corretamente</h5>
+							<hr>
+							<label  ng-if="select.quantidade !== 0">Quantidade disponível: {{select.quantidade}}</label>
+							<label ng-if="select.metro !== 0">Metros disponíveis: {{select.metro}}m</label>	
+							<div class="input-group">
+								<input type="number" class="form-control" name="tipo" ng-model="select.qtdProjeto" placeholder="Digite..." ng-required />
+								<span class="input-group-btn">
+									<button class="btn btn-success" ng-disabled="tipo.$invalid" ng-if="select.quantidade !== 0" ng-click ="adicionarItem(select.qtdProjeto,'quantidade')" type="button">Add</button>
+									
+									<button class="btn btn-success" ng-click ="adicionarItem(select.qtdProjeto,'metro')" ng-disabled="tipo.$invalid" ng-if="select.metro !== 0" type="button">Add</button>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 caixaDireita">
+						<h5 class="titulos">Adicionados ao projeto</h5>
+							<hr>
+						<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
+							<div class="col-lg-6">
+								<div class="input-group">
+									<span class="input-group-addon">
+										<input name="item" type="radio" aria-label="Checkbox for following text input">
+									</span>
+									<label class="form-control" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" ng-show="valorMaior">
+				<div class="col-md-2"></div>
+				<div class="col-md-8 cadNot" >
+					<label for=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Valor digitado maior do que disponível em estoque!</label>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</div>
+
 	</section>
+

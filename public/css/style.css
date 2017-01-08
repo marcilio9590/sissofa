@@ -11,8 +11,8 @@
 }
 #index #header{
 	top:0%; 
-  	position: fixed;
-  	z-index: 1;
+	position: fixed;
+	z-index: 1;
 }
 #index .button{
 	border: 3px solid #222222;
@@ -64,7 +64,10 @@
 }
 th{
 	cursor: pointer;
+	background-color: #242424;
+	color: #fff;
 }
+
 #acoes{
 	font-size: 13px; 
 	cursor: pointer;
@@ -76,4 +79,34 @@ th{
 	padding: 10px;
 	color: #fff;
 	font-size: 20px;
+}
+.cadNot{
+	background-color: #ce4844;
+	margin-top: 10px;
+	border-radius: 5px;
+	text-align: center;
+	padding: 10px;
+	color: #fff;
+	font-size: 20px;
+}
+.caixaEsquerda{
+	border: 1px #ccc solid;
+	text-align: center;
+	height: 300px;
+	overflow: auto;
+}
+.caixaMeio{
+	border: 1px #ccc solid;
+	text-align: center;
+	height: 300px;
+}
+.caixaDireita{
+	border: 1px #ccc solid;
+	text-align: center;
+	height: 300px;
+}
+hr{
+	color: #ccc;
+	background-color: #ccc;
+	height: 1px;
 }
