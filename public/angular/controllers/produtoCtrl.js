@@ -65,8 +65,10 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 			vm.edit = true;
 			vm.closeModal();
 			vm.listarEstoque();
+			vm.idEditado = obj.codigo;
 			$timeout(function() {
 				vm.edit = false;
+				vm.idEditado = '';
 			}, 3000);	
 		}, function errorCallback(response){
 			alert(response.data);
