@@ -5,8 +5,9 @@
 }
 #index .logoMc{
 	width: 150px;
-  	top:90%; right:1%;
+	height: 55px;
 	float: right;
+	margin-right: 15px;
 }
 #index #header{
 	top:0%; 
@@ -67,4 +68,12 @@ th{
 #acoes{
 	font-size: 13px; 
 	cursor: pointer;
+}
+.cadOk{
+	background-color: #4cae4c;
+	border-radius: 5px;
+	text-align: center;
+	padding: 10px;
+	color: #fff;
+	font-size: 20px;
 }

@@ -4,80 +4,115 @@
 			<h1 class="titulos">Estoque</h1>
 		</div>
 		<div class="col-md-6">
-			
 		</div>
 		<div class="col-md-3">
 			<div class="col-md-12" align="right"><input placeholder="Pesquisar" type="text" style="margin-top: 30px" ng-model="search" class="form-control" /></div>
 		</div>
 	</div>
-		<div class="row">
-			<div class="col-md-12" align="center">
-				<table class="table table-bordered table-striped table-condensed">
-					<thead>
-						<tr>
-							<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-							<th >Nome do item <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
-							<th>Preço do item</th>
-							<th>Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:10">
-							<td>{{array.codigo}}</td>
-							<td>{{array.nome}}</td>
-							<td>{{array.preco | currency:'R$ '}}</td>
-							<td>
-								<button ng-click="editar(array)" class="btn btn-sm btn-primary btn-xs" title="Editar">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								</button>
-								<button ng-click="excluir(array)" class="btn btn-danger btn-xs" title="Excluir">
-									<i class="fa fa-trash-o" aria-hidden="true"></i>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<dir-pagination-controls 
-					max-size="10"
-					direction-links="true"
-					boundary-links="true" >
-				</dir-pagination-controls>
+	<div class="row">
+		<div class="col-md-12" align="center">
+			<table class="table table-bordered table-striped table-condensed">
+				<thead>
+					<tr>
+						<th ng-click="ordenar('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':isSortUp('codigo'),'glyphicon-chevron-down':isSortDown('codigo')}"></span></th>
+						<th ng-click="ordenar('nome')">Nome do item <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverseNome,'glyphicon-chevron-down':!reverseNome}"></th>
+						<th>Preço do item</th>
+						<th width="150px">Quantidadade/Metros</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr dir-paginate="array in data | orderBy:sortKey:reverse | filter: search |itemsPerPage:10">
+						<td>{{array.codigo}}</td>
+						<td>{{array.nome}}</td>
+						<td>{{array.preco | currency:'R$ '}}</td>
+						<td width="150px"> 
+							<label ng-if="array.quantidade != 0 && array.metro == 0">
+								{{array.quantidade}} / Unidade<font ng-if="array.quantidade > 1">s</font>
+							</label>
+
+							<label ng-if="array.metro != 0 && array.quantidade == 0" >
+								{{array.metro}} / Metro<font ng-if="array.metro > 1">s</font>
+							</label>
+						</td>
+						<td>
+							<button ng-click="editar(array)" class="btn btn-sm btn-primary btn-xs" title="Editar">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+							<button ng-click="deletarItem(array.codigo)" confirm="Deseja mesmo excluir?" class="btn btn-danger btn-xs" title="Excluir">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<dir-pagination-controls 
+			max-size="10"
+			direction-links="true"
+			boundary-links="true" >
+		</dir-pagination-controls>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Editando item n° {{produto.codigo}} </h4>
+			</div>
+			<div class="modal-body">
+				<form name="editMaterial">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="nome">Nome</label>
+							<input type="text" ng-required="true" class="form-control" ng-model="produto.nome">
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="preco">Preço</label> <label ng-show="flag">Total</label>
+							<input type="number" ng-required="true" class="form-control" ng-model="produto.preco">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-inline">
+							<input type="checkbox" ng-checked="flag" class="form-control" ng-click="troca()">
+							<label for="nome" style="font-size:13px;">Este item é vendido por metro?</label>
+						</div>
+					</div>
+					<div class="col-md-6" ng-if="flag">
+						<div class="form-group">
+							<label for="preco">Total de metros</label>
+							<input type="number" ng-required="true" class="form-control" ng-model="produto.metro">
+						</div>
+					</div>
+					<div class="col-md-6" ng-if="!flag">
+						<div class="form-group">
+							<label for="preco">Quantidade</label>
+							<input type="number" ng-required="true" class="form-control" ng-model="produto.quantidade">
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" ng-click="closeModal()">Fechar</button>
+				<button type="button" ng-disabled="editMaterial.$invalid" ng-click="salvarEdicao(produto)" class="btn btn-primary">Salvar</button>
 			</div>
 		</div>
+	</div>
+</div>	
 
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		        <h4 class="modal-title" id="myModalLabel">Editando item n° {{produto.codigo}} </h4>
-		      </div>
-		      <div class="modal-body">
-		      	<form name="cadMaterial">
-					<div class="col-md-6">
-						<div class="form-group">
-					    <label for="nome">Nome</label>
-					    <input type="text" ng-required="true" class="form-control" ng-model="produto.nome">
-					  </div>
-					</div>
-					 
-					<div class="col-md-6">
-						<div class="form-group">
-					    <label for="preco">Preço</label>
-					    <input type="text" ng-required="true" class="form-control" ng-model="produto.preco">
-					  </div>
-					</div>
-					
-				</form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" ng-click="closeModal()">Fechar</button>
-		        <button type="button" ng-disabled="cadMaterial.$invalid" class="btn btn-primary">Salvar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>	
+	<div class="row" ng-show="edit">
+		<div class="col-md-4"></div>
+		<div class="col-md-4 cadOk" >
+			<label for=""><i class="fa fa-check" aria-hidden="true"></i> Item Editado com sucesso !!!</label>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
 </section>

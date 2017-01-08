@@ -1,64 +1,121 @@
-myApp.controller("produtoCtrl", function($scope,$http){
+myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 	var vm = $scope;
 	vm.produto = {};
+	vm.cad = false;
+	vm.flag = false;
 
-	vm.data = [{
-		"codigo":1,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":2,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":3,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":4,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":5,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":6,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":7,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":8,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":9,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":10,
-		"nome":"espuma",
-		"preco":25.00
-	},{
-		"codigo":11,
-		"nome":"espuma",
-		"preco":25.00
-	}];
+	vm.isSortUp = function(fieldName){
+		return vm.sortKey === fieldName && !vm.reverse;
+	};
+
+	vm.isSortDown = function(fieldName){
+		return vm.sortKey === fieldName && vm.reverse;
+	};
+
+
+	vm.ordenar = function(nomeColuna){
+		vm.sortKey = nomeColuna; 
+		vm.reverse = !vm.reverse;
+		// if(nomeColuna === 'codigo'){
+		// 	vm.reverseCod = !vm.reverseCod;
+		// 	vm.reverseNome = false;
+		// }else if(nomeColuna === 'nome'){
+		// 	vm.reverseNome = !vm.reverseNome;
+		// 	vm.reverseCod = false;
+		// }
+	};
+
+	vm.listarEstoque = function(){
+		$http({
+			method: 'GET',
+			url: '/estoque/listar'
+		}).then(function successCallback(response) {
+			vm.data = produtosFactory.convertEstoqueToFront(response.data);	
+
+		}, function errorCallback(response){
+
+			alert(response.data);
+		});
+	}
+
+	vm.incluirItem = function(obj){
+		$http({
+			method: 'POST',
+			url: '/estoque/salvarItem',
+			data:obj
+		}).then(function successCallback(response) {
+			vm.cad = true;
+			$timeout(function() {
+				vm.cad = false;
+			}, 3000);	
+		}, function errorCallback(response){
+			alert(response.data);
+		});
+		vm.produto = {};
+		vm.flag = false;
+	}
+
+	vm.salvarEdicao = function(obj){
+		var objConvert = produtosFactory.convertEstoqueToBack(obj);
+			$http({
+			method: 'PUT',
+			url: '/estoque/editarItem/'+obj.codigo,
+			data:objConvert
+		}).then(function successCallback(response) {
+			vm.edit = true;
+			vm.closeModal();
+			vm.listarEstoque();
+			$timeout(function() {
+				vm.edit = false;
+			}, 3000);	
+		}, function errorCallback(response){
+			alert(response.data);
+		});
+	}
+
+	vm.deletarItem = function(id){
+		$http({
+			method: 'DELETE',
+			url: '/estoque/delItem/'+id
+		}).then(function successCallback(response) {
+			vm.listarEstoque();
+		}, function errorCallback(response){
+			alert(response.data);
+		});
+	}
+
+	vm.troca = function(){
+		if (vm.flag == true) {
+			vm.flag = false; 
+			vm.produto.metro = '';
+		}else{
+			vm.flag = true
+			vm.produto.quantidade = '';
+		}
+	}
 
 	function openModal(){
 		angular.element('#myModal').modal('show');
 	}
+
 	vm.closeModal = function(){
 		angular.element('#myModal').modal('hide');
 		vm.produto = {};
+		vm.flag = false;
 	}
+
 	vm.editar = function(obj){
 		vm.produto.nome = obj.nome;
 		vm.produto.preco = obj.preco;
 		vm.produto.codigo = obj.codigo;
+		if (obj.metro != 0){
+			vm.flag = true;
+			vm.produto.metro = obj.metro;
+		}
+		if (obj.quantidade != 0){
+			vm.flag = false;
+			vm.produto.quantidade = obj.quantidade;
+		}
 		openModal();
 
 	}
@@ -67,4 +124,9 @@ myApp.controller("produtoCtrl", function($scope,$http){
 
 	}
 
+	function activate(){
+		vm.listarEstoque();
+	}
+
+	activate();
 });
