@@ -94,16 +94,24 @@ th{
 	text-align: center;
 	height: 300px;
 	overflow: auto;
+	padding-bottom: 10px;
 }
 .caixaMeio{
 	border: 1px #ccc solid;
 	text-align: center;
 	height: 300px;
+	padding-bottom: 10px;
 }
 .caixaDireita{
 	border: 1px #ccc solid;
 	text-align: center;
 	height: 300px;
+	padding-bottom: 10px;
+}
+.botaoMeioRemover{
+	position: absolute;
+	bottom: 10px;
+	left: 38%;
 }
 hr{
 	color: #ccc;

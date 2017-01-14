@@ -3,6 +3,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.step1 = true;
 	vm.step2 = false;
 	vm.mostra = false;
+	vm.mostraRemover = false;
 	vm.select = {};
 	vm.valorMaior = false;
 	vm.adicionadosProjeto = [];
@@ -20,27 +21,67 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 
 	vm.selecionar = function(item){
 		vm.select = item;
-		vm.mostra = true;
+		if (item.quantidade == 0 && item.metro == 0) {
+			vm.estoqueVazio = true;
+			vm.mostra = false;
+		}else{
+			vm.estoqueVazio = false;
+			vm.mostra = true;
+		}
+
+	}
+	vm.selectDireia = function(item){
+		vm.selectDireita = item;
+		vm.mostraRemover = true;
+	}
+
+	vm.removerItem = function(){
+		for (var i = 0; i < vm.listEstoque.length; i++) {
+			if(vm.listEstoque[i].codigo == vm.selectDireita.codigo){
+				if (vm.selectDireita.tipo == "quantidade") {
+					vm.listEstoque[i].quantidade += vm.selectDireita.novaQtd; 
+					vm.estoqueVazio = false;
+				}else if(vm.selectDireita.tipo == "metro"){
+					vm.listEstoque[i].metro += vm.selectDireita.novoMetro;
+					vm.estoqueVazio = false;
+				}
+			}
+		}
+		if(vm.select.codigo === vm.selectDireita.codigo){
+			vm.mostra = true;
+		}
+		for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+			if(vm.adicionadosProjeto[i].codigo === vm.selectDireita.codigo){
+				vm.adicionadosProjeto.splice(i,1);
+				vm.mostraRemover = false;
+			}
+		}	
 	}
 
 	vm.adicionarItem = function(qtdProjeto,tipo){
 		switch (tipo) {
 			case 'quantidade':
-			if (qtdProjeto > vm.select.quantidade) {
+			if (qtdProjeto > vm.select.quantidade || qtdProjeto <= 0) {
 				vm.valorMaior = true;
 				$timeout(function() {
 					vm.valorMaior = false;
 				}, 3000);
 			}else{
-
 				vm.select.novaQtd = qtdProjeto;
 				vm.select.quantidade = vm.select.quantidade - qtdProjeto;
+				vm.select.tipo = "quantidade";
 				vm.adicionadosProjeto.push(vm.select);	
 				vm.select.qtdProjeto = '';
+				vm.estoqueVazio = false;
+				if (vm.select.quantidade == 0) {
+					vm.estoqueVazio = true;
+					vm.mostra = false;
+				}
+				
 			}
 			break;
 			case 'metro':
-			if (qtdProjeto > vm.select.metro) {
+			if (qtdProjeto > vm.select.metro || qtdProjeto <= 0) {
 				vm.valorMaior = true;
 				$timeout(function() {
 					vm.valorMaior = false;
@@ -48,8 +89,15 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 			}else{
 				vm.select.novoMetro = qtdProjeto;
 				vm.select.metro = vm.select.metro - qtdProjeto;
+				vm.select.tipo = "metro";
 				vm.adicionadosProjeto.push(vm.select);
 				vm.select.qtdProjeto = '';
+				vm.estoqueVazio = false;
+				if (vm.select.metro == 0) {
+					vm.estoqueVazio = true;
+					vm.mostra = false;
+				}
+				
 			}
 			break;	
 			default:
