@@ -121,3 +121,10 @@ hr{
 .itemsEstoque{
 	text-align: left;
 }
+.botaoSalvar{
+	float: right;
+	margin-top: 10px;
+}
+.opcoes{
+	cursor: pointer;
+}

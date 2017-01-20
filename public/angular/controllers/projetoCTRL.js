@@ -6,7 +6,11 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.mostraRemover = false;
 	vm.select = {};
 	vm.valorMaior = false;
+	vm.achouIgual = false;
 	vm.adicionadosProjeto = [];
+	vm.projeto = {};
+	vm.botaoRadio = 0;
+	vm.botaoRadioDireita = 0;
 
 	vm.listarEstoque = function(){
 		$http({
@@ -21,6 +25,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 
 	vm.selecionar = function(item){
 		vm.select = item;
+		vm.botaoRadio = item.codigo;
 		if (item.quantidade == 0 && item.metro == 0) {
 			vm.estoqueVazio = true;
 			vm.mostra = false;
@@ -33,6 +38,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.selectDireia = function(item){
 		vm.selectDireita = item;
 		vm.mostraRemover = true;
+		vm.botaoRadioDireita = item.codigo;
 	}
 
 	vm.removerItem = function(){
@@ -54,6 +60,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 			if(vm.adicionadosProjeto[i].codigo === vm.selectDireita.codigo){
 				vm.adicionadosProjeto.splice(i,1);
 				vm.mostraRemover = false;
+				vm.botaoRadioDireita = 0;
 			}
 		}	
 	}
@@ -69,8 +76,21 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 			}else{
 				vm.select.novaQtd = qtdProjeto;
 				vm.select.quantidade = vm.select.quantidade - qtdProjeto;
+				if (vm.select.quantidade == 0) {
+				}
 				vm.select.tipo = "quantidade";
-				vm.adicionadosProjeto.push(vm.select);	
+				if (vm.adicionadosProjeto.length > 0) {
+					for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+						if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
+							vm.adicionadosProjeto[i].novaQtd += qtdProjeto;
+							vm.achouIgual = true;
+						}
+					}
+				}
+				if (!vm.achouIgual) {
+					vm.adicionadosProjeto.push(vm.select);
+				}
+
 				vm.select.qtdProjeto = '';
 				vm.estoqueVazio = false;
 				if (vm.select.quantidade == 0) {
@@ -90,7 +110,20 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				vm.select.novoMetro = qtdProjeto;
 				vm.select.metro = vm.select.metro - qtdProjeto;
 				vm.select.tipo = "metro";
-				vm.adicionadosProjeto.push(vm.select);
+
+				if (vm.adicionadosProjeto.length > 0) {
+					for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+						if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
+							vm.adicionadosProjeto[i].novoMetro += qtdProjeto;
+							vm.achouIgual = true;
+						}
+					}
+				}
+				if (!vm.achouIgual) {
+					vm.adicionadosProjeto.push(vm.select);
+					vm.achouIgual = false;
+				}
+
 				vm.select.qtdProjeto = '';
 				vm.estoqueVazio = false;
 				if (vm.select.metro == 0) {
@@ -104,8 +137,27 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				// statements_def
 				break;
 			}
-
 		}
+
+		vm.SalvarProjeto = function(){
+			var data = {
+				"projeto":vm.step1Ojbj,
+				"itens":vm.adicionadosProjeto
+			};
+			
+			 var converterd = projetoFactory.convertProjetoToBack(data);
+
+			$http({
+				method: 'POST',
+				url: '/projeto/salvar',
+				data:data
+			}).then(function successCallback(response) {
+				alert('funcionou');
+			}, function errorCallback(response){
+				alert(response.data);
+			});
+		}
+
 		vm.data = [{
 			"codigo":1,
 			"nomeProj":"Sofá 2 lugares",
@@ -151,6 +203,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 
 	vm.continuar = function(){
 		vm.step1 = false;
+		vm.step1Ojbj = vm.projeto;
 		vm.step2 = true;
 		vm.objTableProjeto = {};
 		vm.listarEstoque();

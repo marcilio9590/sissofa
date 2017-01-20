@@ -77,11 +77,11 @@
 							
 							<div class="row itemsEstoque" ng-repeat="x in listEstoque">
 								<div class="col-lg-6">
-									<div class="input-group">
+									<div class="input-group opcoes" ng-click="selecionar(x)">
 										<span class="input-group-addon">
-											<input ng-click="selecionar(x)" name="itemAdd" type="radio" aria-label="Checkbox for following text input">
+											<input name="itemAdd" ng-model="botaoRadio" value="{{x.codigo}}" type="radio" aria-label="Checkbox for following text input">
 										</span>
-										<label class="form-control" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+										<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
 									</div>
 								</div>
 							</div>
@@ -123,11 +123,11 @@
 						<hr>
 						<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
 							<div class="col-lg-6">
-								<div class="input-group">
+								<div class="input-group opcoes" ng-click="selectDireia(x)">
 									<span class="input-group-addon">
-										<input name="item" type="radio" ng-click="selectDireia(x)" aria-label="Checkbox for following text input">
+										<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.codigo}}" aria-label="Checkbox for following text input">
 									</span>
-									<label class="form-control" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+									<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
 								</div>
 							</div>
 						</div>
@@ -142,6 +142,12 @@
 				</div>
 				<div class="col-md-2"></div>
 			</div>
+			<div class="botaoSalvar">
+				<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
+				Salvar
+			</button>
+			</div>
+			
 		</div>
 
 	</section>
