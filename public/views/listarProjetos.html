@@ -11,45 +11,62 @@
 		</div>
 	</div>
 
-		<div class="row">
-			<div class="col-md-12" align="center">
-				<table class="table table-bordered table-striped table-condensed">
-					<thead>
-						<tr>
-							<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
-							<th>Nome do projeto</th>
-							<th ng-click="sort('nomeClie')">Nome do cliente <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
-							<th>Telefone do cliente</th>
-							<th>Descrição do projeto</th>
-							<th>Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:10">
-							<td>{{array.codigo}}</td>
-							<td>{{array.nomeProj}}</td>
-							<td>{{array.nomeClie}}</td>
-							<td>{{array.telCli}}</td>
-							<td>{{array.descrProj}}</td>
-							<td>
-								<button class="btn btn-sm btn-primary btn-xs" title="Editar">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+	<div class="row">
+		<div class="col-md-12" align="center">
+			<table class="table table-bordered table-striped table-condensed">
+				<thead>
+					<tr>
+						<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+						<th>Nome do projeto</th>
+						<th ng-click="sort('nomeClie')">Nome do cliente <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
+						<th>Telefone do cliente</th>
+						<th>Endereço do cliente</th>
+						<th>Descrição do projeto</th>
+						<th>Materias do projeto</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr dir-paginate="array in data|orderBy:sortKey:reverse|filter: search |itemsPerPage:10">
+						<td>{{array.codigo}}</td>
+						<td>{{array.nomeProj}}</td>
+						<td>{{array.nomeClie}}</td>
+						<td>{{array.telCli}}</td>
+						<td>{{array.endCli}}</td>
+						<td>{{array.descrProj}}</td>
+						<td>
+							<button class="btn btn-sm btn-warning btn-xs" ng-click="buscarItens(array.codigo,$index)" ng-if="!array.itensProjeto || array.itensProjeto.length == 0">
+								Ver
+							</button>
+								<div ng-repeat="item in array.itensProjeto">
+									<label for="">Nome: {{item.nome}}</label><br>
+									<label for="">Quantidade: {{item.qtd}}</label>
+									<hr>
+								</div>
+								<button class="btn btn-sm btn-danger btn-xs" ng-click="esconderItens($index)">
+									Esconder
 								</button>
-								<button class="btn btn-danger btn-xs" title="Excluir">
-									<i class="fa fa-trash-o" aria-hidden="true"></i>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<dir-pagination-controls 
-						max-size="10"
-						direction-links="true"
-						boundary-links="true" >
-					</dir-pagination-controls>
-			</div>
-		</div>
-		
-		
-	
+							
+						</td>
+						<td>
+							<button class="btn btn-sm btn-primary btn-xs" title="Editar">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+							<button class="btn btn-danger btn-xs" title="Excluir">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<dir-pagination-controls 
+			max-size="10"
+			direction-links="true"
+			boundary-links="true" >
+		</dir-pagination-controls>
+	</div>
+</div>
+
+
+
 </section>

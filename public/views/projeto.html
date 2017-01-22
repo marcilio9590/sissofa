@@ -123,7 +123,7 @@
 						<hr>
 						<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
 							<div class="col-lg-6">
-								<div class="input-group opcoes" ng-click="selectDireia(x)">
+								<div class="input-group opcoes" ng-click="selectDireita(x)">
 									<span class="input-group-addon">
 										<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.codigo}}" aria-label="Checkbox for following text input">
 									</span>
@@ -144,11 +144,17 @@
 			</div>
 			<div class="botaoSalvar">
 				<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
-				Salvar
-			</button>
-			</div>
-			
+					Salvar
+				</button>
+			</div>	
 		</div>
-
+		<div class="row" ng-show="cadOk">
+			<br>
+			<div class="col-md-2"></div>
+			<div class="col-md-8 cadOk" >
+				<label for=""><i class="fa fa-check" aria-hidden="true"></i> Cadastro realizado com sucesso!!!</label>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
 	</section>
 

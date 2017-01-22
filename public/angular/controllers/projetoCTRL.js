@@ -7,6 +7,8 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.select = {};
 	vm.valorMaior = false;
 	vm.achouIgual = false;
+	vm.cadOk = false;
+	vm.mostrarItens = false;
 	vm.adicionadosProjeto = [];
 	vm.projeto = {};
 	vm.botaoRadio = 0;
@@ -35,7 +37,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		}
 
 	}
-	vm.selectDireia = function(item){
+	vm.selectDireita = function(item){
 		vm.selectDireita = item;
 		vm.mostraRemover = true;
 		vm.botaoRadioDireita = item.codigo;
@@ -144,63 +146,59 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				"projeto":vm.step1Ojbj,
 				"itens":vm.adicionadosProjeto
 			};
-			
-			 var converterd = projetoFactory.convertProjetoToBack(data);
+			var converterd = projetoFactory.convertProjetoToBack(data);
 
 			$http({
 				method: 'POST',
 				url: '/projeto/salvar',
-				data:data
+				data:converterd
 			}).then(function successCallback(response) {
-				alert('funcionou');
+				vm.step1 = true;
+				vm.projeto = {};
+				vm.step2 = false;
+				vm.adicionadosProjeto = [];
+				vm.cadOk = true;
+				$timeout(function() {
+					vm.cadOk = false;
+				}, 3000);
+			}, function errorCallback(response){
+				alert(response);
+			});
+		}
+
+		vm.listarProjetos = function(){
+			$http({
+				method: 'GET',
+				url: '/projeto/listar'
+			}).then(function successCallback(response) {
+				vm.data = projetoFactory.convertProjetoToFront(response.data);	
 			}, function errorCallback(response){
 				alert(response.data);
 			});
 		}
-
-		vm.data = [{
-			"codigo":1,
-			"nomeProj":"Sofá 2 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Rubens Barrichello",
-			"telCli":"(81) 99999-9999"
-		},{
-			"codigo":2,
-			"nomeProj":"Sofá 2 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Maria da Silva",
-			"telCli":"(81) 99999-9999"
-		},{
-			"codigo":3,
-			"nomeProj":"Sofá 2 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Maria da Silva",
-			"telCli":"(81) 99999-9999"
-		},{
-			"codigo":4,
-			"nomeProj":"Sofá 2 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Marcos dos santos",
-			"telCli":"(81) 99999-9999"
-		},{
-			"codigo":5,
-			"nomeProj":"Sofá 2 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Sandra Regina",
-			"telCli":"(81) 99999-9999"
-		},{
-			"codigo":6,
-			"nomeProj":"Sofá 4 lugares",
-			"descrProj":"sofa de 2 lugares revestido com (tipo do tecido)...",
-			"nomeClie":"Marcela Araujo",
-			"telCli":"(81) 99999-9999"
-		}];
 
 		$scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	}
 
+	vm.buscarItens = function(codigo,index){
+		$http({
+				method: 'GET',
+				url: '/projeto/ItensProjeto/'+codigo
+			}).then(function successCallback(response) {
+				vm.data[index].itensProjeto = projetoFactory.convertItensProjetoToFront(response.data);
+				// vm.itensProjeto = response.data;
+				vm.mostrarItens = true;	
+			}, function errorCallback(response){
+				alert(response.data);
+			});
+	}
+
+	vm.esconderItens = function(index){
+		vm.data[index].itensProjeto = [];
+		vm.mostrarItens = false;
+	}
 	vm.continuar = function(){
 		vm.step1 = false;
 		vm.step1Ojbj = vm.projeto;
@@ -209,8 +207,9 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		vm.listarEstoque();
 	}
 
-
-
-
+	function activate (){
+		vm.listarProjetos();
+	}
+	activate();
 
 });

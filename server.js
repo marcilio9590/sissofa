@@ -99,9 +99,10 @@ app.put('/estoque/editarItem/:id', function(req, res){
 
 app.post('/projeto/salvar', function(req, res){
 
-	var obj = req.body
+	var obj = req.body;
 	var projeto = obj.projeto;
 	var itens = obj.itens;
+	var itensUpdate = obj.itensUpdate;
 	var count = itens.length;
 
 	if (obj.nome != 'undefined' && obj.preco != 'undefined') {
@@ -113,38 +114,84 @@ app.post('/projeto/salvar', function(req, res){
 			if(err) throw err;
 			else {
 
+				var selectIdProjetos = "SHOW TABLE STATUS LIKE 'projetos'";
+				var count = itens.length;
+				pool.query(selectIdProjetos, function(err, rows){
+					if(err) throw err;
+					else {
+						retornoProjeto = rows[0].Auto_increment -1;
+						if (itens.length > 0) {
+							for (var i = 0; i < itens.length; i++) {
+								itens[i].idProjeto = retornoProjeto;
+							}
+						}
+						var Query = InsertQuery({
+							table: 'itensprojetos',
+							maxRow: count,
+							data: itens
+						})
+						sql = Query.next();
+						pool.query(sql,function(err, rows){
+							if(err) throw err;
+							else {
+								//fazer o update no estoque
+								var updateMetro = 'UPDATE estoque SET metro = metro - ? WHERE id = ?';
+								var updateQtd = 'UPDATE estoque SET quantidade = quantidade - ? WHERE id = ?';
+
+								for (var i = 0; i < itensUpdate.length; i++) {
+									if (itensUpdate[i].tipo == 'metro') {
+										var item = {
+											metro:itensUpdate[i].qtd,
+											id:itensUpdate[i].id
+										}
+										pool.query(updateMetro, [item.metro, item.id], function(err, rows){
+											if(err) throw err;
+											else {
+											}
+										});
+									}else if (itensUpdate[i].tipo == 'quantidade') {
+										var item2 = {
+											quantidade:itensUpdate[i].qtd,
+											id:itensUpdate[i].id
+										}
+										pool.query(updateQtd,[item2.quantidade, item2.id],function(err, rows){
+											if(err) throw err;
+											else {
+											}
+										});
+									}
+								}
+								res.send(true);
+							}
+						});
+					}
+				});
+
 			}
 		});
-	}
+	}	
+});
 
-	var selectIdProjetos = "SHOW TABLE STATUS LIKE 'projetos'";
-	var count = itens.length;
-
-	pool.query(selectIdProjetos, function(err, rows){
+app.get('/projeto/listar', function(req, res){
+	var selectProjeto = 'SELECT * FROM projetos';
+	pool.query(selectProjeto, function(err, rows){
 		if(err) throw err;
 		else {
-			retornoProjeto = rows[0].Auto_increment -1;
-			if (itens.length > 0) {
-				for (var i = 0; i < itens.length; i++) {
-					itens[i].idProjeto = retornoProjeto;
-
-				}
-			}
-			var Query = InsertQuery({
-				table: 'itensprojetos',
-				maxRow: count,
-				data: itens
-			})
-			sql = Query.next();
-			pool.query(sql,function(err, rows){
-				if(err) throw err;
-				else {
-					res.send(true);
-				}
-			});
+			res.send(rows);
 		}
 	});
-	
+});
+
+app.get('/projeto/ItensProjeto/:id', function(req, res){
+	var id = req.params.id;
+	var selectItensProjeto = 'SELECT ip.*, e.nome FROM itensprojetos ip INNER JOIN estoque e ON ' 
+	+'e.id = ip.idItem WHERE ip.idProjeto = ?';
+	pool.query(selectItensProjeto, id, function(err, rows){
+		if(err) throw err;
+		else {
+			res.send(rows);
+		}
+	});
 });
 
 
