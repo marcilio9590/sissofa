@@ -184,15 +184,15 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 
 	vm.buscarItens = function(codigo,index){
 		$http({
-				method: 'GET',
-				url: '/projeto/ItensProjeto/'+codigo
-			}).then(function successCallback(response) {
-				vm.data[index].itensProjeto = projetoFactory.convertItensProjetoToFront(response.data);
-				// vm.itensProjeto = response.data;
-				vm.mostrarItens = true;	
-			}, function errorCallback(response){
-				alert(response.data);
-			});
+			method: 'GET',
+			url: '/projeto/ItensProjeto/'+codigo
+		}).then(function successCallback(response) {
+			vm.data[index].itensProjeto = projetoFactory.convertItensProjetoToFront(response.data);
+			// vm.itensProjeto = response.data;
+			vm.mostrarItens = true;	
+		}, function errorCallback(response){
+			alert(response.data);
+		});
 	}
 
 	vm.esconderItens = function(index){

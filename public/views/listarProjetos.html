@@ -18,7 +18,7 @@
 					<tr>
 						<th ng-click="sort('codigo')">Código <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
 						<th>Nome do projeto</th>
-						<th ng-click="sort('nomeClie')">Nome do cliente <span class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
+						<th>Nome do cliente</th>
 						<th>Telefone do cliente</th>
 						<th>Endereço do cliente</th>
 						<th>Descrição do projeto</th>
@@ -36,17 +36,16 @@
 						<td>{{array.descrProj}}</td>
 						<td>
 							<button class="btn btn-sm btn-warning btn-xs" ng-click="buscarItens(array.codigo,$index)" ng-if="!array.itensProjeto || array.itensProjeto.length == 0">
-								Ver
+								Mostrar
 							</button>
-								<div ng-repeat="item in array.itensProjeto">
-									<label for="">Nome: {{item.nome}}</label><br>
-									<label for="">Quantidade: {{item.qtd}}</label>
-									<hr>
-								</div>
-								<button class="btn btn-sm btn-danger btn-xs" ng-click="esconderItens($index)">
-									Esconder
-								</button>
-							
+							<button class="btn btn-sm btn-danger btn-xs" ng-if="array.itensProjeto && array.itensProjeto.length !== 0" ng-click="esconderItens($index)">
+								Ocultar
+							</button>
+							<div ng-repeat="item in array.itensProjeto">
+								<label for="">Nome: {{item.nome}}</label><br>
+								<label for="">Quantidade: {{item.qtd}}</label>
+								<hr ng-hide="$index+1 == array.itensProjeto.length"/>
+							</div>
 						</td>
 						<td>
 							<button class="btn btn-sm btn-primary btn-xs" title="Editar">

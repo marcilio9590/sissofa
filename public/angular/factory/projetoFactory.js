@@ -1,14 +1,6 @@
 // Factory
 myApp.factory('projetoFactory', function(){
 
-	var projetoBack = function(nome, descricao, nomeCliente, telefoneCliente, enderecoCliente) {
-		this.nome =  nome;
-		this.descricao =  descricao;
-		this.nomeCliente =  nomeCliente;
-		this.telefoneCliente =  telefoneCliente;
-		this.enderecoCliente = enderecoCliente;
-	};
-
 	var itemProjetoBack = function(idItem,tipo,metroAtual){
 		this.idItem = idItem;
 		this.tipo = tipo;
@@ -54,6 +46,14 @@ myApp.factory('projetoFactory', function(){
 		
 	}
 
+	var projetoBack = function(nome, descricao, nomeCliente, telefoneCliente, enderecoCliente) {
+		this.nome =  nome;
+		this.descricao =  descricao;
+		this.nomeCliente =  nomeCliente;
+		this.telefoneCliente =  telefoneCliente;
+		this.enderecoCliente = enderecoCliente;
+	};
+
 	function convertProjetoToBack(obj){
 		var objProjetoBack = {};
 		objProjetoBack.itens = [];
@@ -61,8 +61,8 @@ myApp.factory('projetoFactory', function(){
 		objProjetoBack.itensUpdate = [];
 		objProjetoBack.projeto = new projetoBack(
 			obj.projeto.nomeProj,
-			obj.projeto.nomeCli,
 			obj.projeto.descricaoProj,
+			obj.projeto.nomeCli,
 			obj.projeto.telCli,
 			obj.projeto.endCli
 			);
