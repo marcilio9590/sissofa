@@ -43,7 +43,8 @@
 							</button>
 							<div ng-repeat="item in array.itensProjeto">
 								<label for="">Nome: {{item.nome}}</label><br>
-								<label for="">Quantidade: {{item.qtd}}</label>
+								<label ng-if="item.tipo == 'metro'" for="">Metro(s): {{item.qtd | number:2}}</label>
+								<label ng-if="item.tipo == 'quantidade'" for="">Quantidade: {{item.qtd | number:2}}</label>
 								<hr ng-hide="$index+1 == array.itensProjeto.length"/>
 							</div>
 						</td>
@@ -51,7 +52,7 @@
 							<button class="btn btn-sm btn-primary btn-xs" title="Editar">
 								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 							</button>
-							<button class="btn btn-danger btn-xs" title="Excluir">
+							<button ng-click="deletarProjeto(array.codigo)" class="btn btn-danger btn-xs" title="Excluir">
 								<i class="fa fa-trash-o" aria-hidden="true"></i>
 							</button>
 						</td>
@@ -65,7 +66,13 @@
 		</dir-pagination-controls>
 	</div>
 </div>
-
+<div class="row" ng-show="projDelet">
+		<div class="col-md-4"></div>
+		<div class="col-md-4 cadOk" >
+			<label for=""><i class="fa fa-check" aria-hidden="true"></i> Projeto Excluído !!!</label>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
 
 
 </section>

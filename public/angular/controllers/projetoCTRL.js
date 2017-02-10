@@ -9,6 +9,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.achouIgual = false;
 	vm.cadOk = false;
 	vm.mostrarItens = false;
+	vm.projDelet = false;
 	vm.adicionadosProjeto = [];
 	vm.projeto = {};
 	vm.botaoRadio = 0;
@@ -180,6 +181,53 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		$scope.sort = function(keyname){
 		$scope.sortKey = keyname;   //set the sortKey to the param passed
 		$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	}
+
+	vm.deletarProjeto = function(idProjeto){
+		if (!angular.isUndefined(idProjeto)) {
+			$http({
+				method: 'GET',
+				url: '/projeto/ItensProjeto/'+idProjeto
+			}).then(function successCallback(response) {
+				if(response.data.length > 0){
+					var itensDelete = projetoFactory.convertItensToBack(response.data);
+					$http({
+						method: 'POST',
+						url: 'projeto/deletar/itens',
+						data:itensDelete
+					}).then(function successCallback(response) {
+						if (response.data) {
+							$http({
+								method:'GET',
+								url:'/projeto/deletar/'+idProjeto
+							}).then(function successCallback(response){
+								vm.listarProjetos();
+								vm.projDelet = true;
+							}, function errorCallback(response){
+								alert('Não foi possível realizar esta operação!');
+							});
+						}else{
+							alert('Não foi possível realizar esta operação!');
+						}
+
+					}, function errorCallback(response){
+						alert(response.data);
+					});
+				}else if(response.data.length === 0){
+					$http({
+						method:'GET',
+						url:'/projeto/deletar/'+idProjeto
+					}).then(function successCallback(response){
+						vm.listarProjetos();
+						vm.projDelet = true;
+					}, function errorCallback(response){
+						alert('Não foi possível realizar esta operação!');
+					});
+				}
+			}, function errorCallback(response){
+				alert(response.data);
+			});
+		}
 	}
 
 	vm.buscarItens = function(codigo,index){

@@ -121,6 +121,14 @@ myApp.factory('projetoFactory', function(){
 			item.nome
 			);
 	}
+	 var ItemDeletBack = function(id){
+	 	this.id = id;
+	 }
+	 
+	function convertDeletItensToBack(item){
+		return new ItemDeletBack(
+			item.id);
+	}
 
 	function convertItensProjetoToFront(items){
 		listItems = [];
@@ -130,9 +138,20 @@ myApp.factory('projetoFactory', function(){
 		return listItems;
 	} 
 
+	function convertItensToBack(items){
+		listItems = [];
+		for (var i = 0; i < items.length; i++) {
+			listItems.push(convertDeletItensToBack(items[i]));
+		}
+		return listItems;
+	} 
+
+
+
 	var exports = {
 		convertProjetoToBack:convertProjetoToBack,
 		convertProjetoToFront:convertProjetoToFront,
+		convertItensToBack:convertItensToBack,
 		convertItensProjetoToFront:convertItensProjetoToFront
 	};
 

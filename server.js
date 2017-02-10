@@ -41,6 +41,7 @@ var pool =  mysql.createPool({
 	host : 'localhost',
 	user : 'root',
 	password: '',
+	multipleStatements: true,
 	database: 'criArt'
 });
 
@@ -194,6 +195,31 @@ app.get('/projeto/ItensProjeto/:id', function(req, res){
 	});
 });
 
+app.get('/projeto/deletar/:id',function(req, res){
+	var id = req.params.id;
+	var deletProjeto = 'DELETE FROM projetos WHERE id = ?';
+	pool.query(deletProjeto, id, function(err, rows){
+		if(err) throw err;
+		else {
+			res.send(true);
+		}
+	});	
+});	
+
+app.post('/projeto/deletar/itens',function(req, res){
+	var itens = req.body;
+	var query = '';
+	itens.forEach(function (item) {
+		query += mysql.format("DELETE FROM itensprojetos WHERE id = ?; ", item.id);
+	});
+	pool.query(query, function(err, rows){
+		if(err){
+			res.send(err);
+		}else {
+			res.send(true);
+		}
+	});	
+});
 
 app.listen(3000, function(){
 	console.log('Servidor rodando na porta 3000!');
