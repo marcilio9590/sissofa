@@ -8,9 +8,9 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 	vm.valorMaior = false;
 	vm.achouIgual = false;
 	vm.cadOk = false;
-	vm.mostrarItens = false;
 	vm.projDelet = false;
 	vm.adicionadosProjeto = [];
+	vm.mostraBotao = [];
 	vm.projeto = {};
 	vm.botaoRadio = 0;
 	vm.botaoRadioDireita = 0;
@@ -20,10 +20,22 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 			method: 'GET',
 			url: '/estoque/listar'
 		}).then(function successCallback(response) {
-			vm.listEstoque = produtosFactory.convertEstoqueToFront(response.data);	
+			vm.listEstoque = produtosFactory.convertEstoqueToFront(response.data);
 		}, function errorCallback(response){
 			alert(response.data);
 		});
+	}
+
+	vm.editarProjeto = function(projeto){
+		vm.projeto.nomeCli = projeto.nomeClie;
+		vm.projeto.telCli = projeto.telCli;
+		vm.projeto.endCli = projeto.endCli;
+		vm.projeto.nomeProj = projeto.nomeProj;
+		vm.projeto.descricaoProj = projeto.descrProj;
+
+		
+			$("#myModal").modal();
+			console.log(projeto);
 	}
 
 	vm.selecionar = function(item){
@@ -48,7 +60,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		for (var i = 0; i < vm.listEstoque.length; i++) {
 			if(vm.listEstoque[i].codigo == vm.selectDireita.codigo){
 				if (vm.selectDireita.tipo == "quantidade") {
-					vm.listEstoque[i].quantidade += vm.selectDireita.novaQtd; 
+					vm.listEstoque[i].quantidade += vm.selectDireita.novaQtd;
 					vm.estoqueVazio = false;
 				}else if(vm.selectDireita.tipo == "metro"){
 					vm.listEstoque[i].metro += vm.selectDireita.novoMetro;
@@ -65,7 +77,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				vm.mostraRemover = false;
 				vm.botaoRadioDireita = 0;
 			}
-		}	
+		}
 	}
 
 	vm.adicionarItem = function(qtdProjeto,tipo){
@@ -100,7 +112,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 					vm.estoqueVazio = true;
 					vm.mostra = false;
 				}
-				
+
 			}
 			break;
 			case 'metro':
@@ -133,9 +145,9 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 					vm.estoqueVazio = true;
 					vm.mostra = false;
 				}
-				
+
 			}
-			break;	
+			break;
 			default:
 				// statements_def
 				break;
@@ -172,7 +184,25 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				method: 'GET',
 				url: '/projeto/listar'
 			}).then(function successCallback(response) {
-				vm.data = projetoFactory.convertProjetoToFront(response.data);	
+				vm.data = projetoFactory.convertProjetoToFront(response.data);
+				if (vm.data.length > 0) {
+					for (var i = 0; i < vm.data.length; i++) {
+						vm.buscarItens(vm.data[i].codigo,i);
+					}
+				}
+			}, function errorCallback(response){
+				alert(response.data);
+			});
+		}
+
+		vm.buscarItens = function(codigo,index){
+			$http({
+				method: 'GET',
+				url: '/projeto/ItensProjeto/'+codigo
+			}).then(function successCallback(response) {
+				vm.data[index].itensProjeto = projetoFactory.convertItensProjetoToFront(response.data);
+				// vm.itensProjeto = response.data;
+
 			}, function errorCallback(response){
 				alert(response.data);
 			});
@@ -230,22 +260,8 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		}
 	}
 
-	vm.buscarItens = function(codigo,index){
-		$http({
-			method: 'GET',
-			url: '/projeto/ItensProjeto/'+codigo
-		}).then(function successCallback(response) {
-			vm.data[index].itensProjeto = projetoFactory.convertItensProjetoToFront(response.data);
-			// vm.itensProjeto = response.data;
-			vm.mostrarItens = true;	
-		}, function errorCallback(response){
-			alert(response.data);
-		});
-	}
-
-	vm.esconderItens = function(index){
-		vm.data[index].itensProjeto = [];
-		vm.mostrarItens = false;
+	vm.mostrarEsconder = function(index){
+		vm.mostraBotao[index] = !vm.mostraBotao[index];
 	}
 	vm.continuar = function(){
 		vm.step1 = false;

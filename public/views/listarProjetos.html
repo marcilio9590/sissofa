@@ -4,7 +4,7 @@
 			<h1 class="titulos">Lista de projetos</h1>
 		</div>
 		<div class="col-md-4">
-			
+
 		</div>
 		<div class="col-md-3">
 			<div class="col-md-12" align="right"><input placeholder="Pesquisar" type="text" style="margin-top: 30px" ng-model="search" class="form-control" /></div>
@@ -35,13 +35,13 @@
 						<td>{{array.endCli}}</td>
 						<td>{{array.descrProj}}</td>
 						<td>
-							<button class="btn btn-sm btn-warning btn-xs" ng-click="buscarItens(array.codigo,$index)" ng-if="!array.itensProjeto || array.itensProjeto.length == 0">
+							<button class="btn btn-sm btn-warning btn-xs" ng-if="!mostraBotao[$index]" ng-click="mostrarEsconder($index)">
 								Mostrar
 							</button>
-							<button class="btn btn-sm btn-danger btn-xs" ng-if="array.itensProjeto && array.itensProjeto.length !== 0" ng-click="esconderItens($index)">
+							<button class="btn btn-sm btn-danger btn-xs" ng-if="mostraBotao[$index]" ng-click="mostrarEsconder($index)">
 								Ocultar
 							</button>
-							<div ng-repeat="item in array.itensProjeto">
+							<div ng-repeat="item in array.itensProjeto" ng-if="mostraBotao[$parent.$index]">
 								<label for="">Nome: {{item.nome}}</label><br>
 								<label ng-if="item.tipo == 'metro'" for="">Metro(s): {{item.qtd | number:2}}</label>
 								<label ng-if="item.tipo == 'quantidade'" for="">Quantidade: {{item.qtd | number:2}}</label>
@@ -49,7 +49,7 @@
 							</div>
 						</td>
 						<td>
-							<button class="btn btn-sm btn-primary btn-xs" title="Editar">
+							<button ng-click="editarProjeto(array)"	class="btn btn-sm btn-primary btn-xs" title="Editar">
 								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 							</button>
 							<button ng-click="deletarProjeto(array.codigo)" class="btn btn-danger btn-xs" title="Excluir">
@@ -59,14 +59,14 @@
 					</tr>
 				</tbody>
 			</table>
-			<dir-pagination-controls 
+			<dir-pagination-controls
 			max-size="10"
 			direction-links="true"
 			boundary-links="true" >
 		</dir-pagination-controls>
 	</div>
 </div>
-<div class="row" ng-show="projDelet">
+<div class="row" ng-if="projDelet">
 		<div class="col-md-4"></div>
 		<div class="col-md-4 cadOk" >
 			<label for=""><i class="fa fa-check" aria-hidden="true"></i> Projeto Excluído !!!</label>
@@ -74,5 +74,188 @@
 		<div class="col-md-4"></div>
 	</div>
 
+	<!-- Modal -->
+	<div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+
+					<div class="row">
+
+						<div class="col-md-12" ng-if="step1">
+							<h2 class="titulos" align="center">Editando projeto {{projetoEditando.codigo}}</h2>
+						</div>
+						<div class="col-md-12" ng-if="step2">
+								<h2  class="titulos" align="center">Itens do projeto</h2>
+						</div>
+
+					</div>
+	      </div>
+	      <div class="modal-body">
+
+
+					<div ng-if="step1">
+
+						<div class="row">
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<form name="cadProjeto">
+									<div class="row">
+										<div class="col-md-6">
+											<label for="nome">Nome do cliente</label>
+											<input type="text" ng-required="true" class="form-control" ng-model="projeto.nomeCli">
+
+										</div>
+										<div class="col-md-6">
+											<label for="telefone">Telefone do cliente</label>
+											<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="projeto.telCli">
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label for="descricao">Endereço do Cliente</label>
+											<input type="text" ng-required="true" name="nomeProj" class="form-control" ng-model="projeto.endCli"/>
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label for="descricao">Nome do projeto</label>
+											<input type="text" ng-required="true" name="nomeProj" class="form-control" ng-model="projeto.nomeProj"/>
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label for="descricao">Descrição do projeto</label>
+											<textarea type="text" ng-minlength="10" ng-required="true" name="descricaoProj" class="form-control" ng-model="projeto.descricaoProj">
+											</textarea>
+										</div>
+									</div>
+
+									<div class="row">
+										 <div class="modal-footer">
+											<div class="col-md-8"></div>
+											<div class="col-md-2">
+												<br><button class="btn btn-success" ng-click="continuar()" ng-disabled="">Continuar</button>
+											</div>
+										</div>
+									</div>
+								</form>
+
+								<div ng-show="cadProjeto.telCli.$invalid && !cadProjeto.telCli.$pristine" class="erroTel">
+									<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> O telefone deve ser digitado da seguinte forma #####-####</label>
+								</div>
+								<div ng-show="cadProjeto.descricaoProj.$invalid && !cadProjeto.descricaoProj.$pristine" class="erroTel">
+									<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> A descrição deve conter no minimo 10 caracteres</label>
+								</div>
+
+							</div>
+							<div class="col-md-2"></div>
+						</div>
+					</div>
+					<div ng-if="step2">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-4 caixaEsquerda">
+									<h5 class="titulos">Itens Cadastradados</h5>
+									<hr>
+									<div class="boxIntLeft">
+
+										<div class="row itemsEstoque" ng-repeat="x in listEstoque">
+											<div class="col-lg-6">
+												<div class="input-group opcoes" ng-click="selecionar(x)">
+													<span class="input-group-addon">
+														<input name="itemAdd" ng-model="botaoRadio" value="{{x.codigo}}" type="radio" aria-label="Checkbox for following text input">
+													</span>
+													<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-4 caixaMeio">
+									<div ng-if="mostra">
+										<h5 class="titulos">Preencha Corretamente</h5>
+										<hr>
+										<label  ng-if="select.quantidade !== 0">Quantidade disponível: {{select.quantidade}}</label>
+										<label ng-if="select.metro !== 0">Metros disponíveis: {{select.metro}}m</label>
+										<div class="input-group">
+											<input type="number" class="form-control" name="tipo" ng-model="select.qtdProjeto" placeholder="Digite..." ng-required />
+											<span class="input-group-btn">
+												<button class="btn btn-success" ng-disabled="tipo.$invalid" ng-if="select.quantidade !== 0" ng-click ="adicionarItem(select.qtdProjeto,'quantidade')" type="button">Add >></button>
+
+												<button class="btn btn-success" ng-click ="adicionarItem(select.qtdProjeto,'metro')" ng-disabled="tipo.$invalid" ng-if="select.metro !== 0" type="button">Add >></button>
+											</span>
+										</div>
+									</div>
+									<div ng-if="estoqueVazio">
+										<div class="col-md-2"></div>
+										<div class="col-md-8 cadNot" >
+											<label for=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Estoque vazio para este item!</label>
+										</div>
+										<div class="col-md-2"></div>
+									</div>
+
+									<div ng-if="mostraRemover" class="botaoMeioRemover">
+										<button class="btn btn-success" ng-click ="removerItem()" ng-disabled="tipo.$invalid" type="button">
+											<< Remover
+										</button>
+									</div>
+								</div>
+
+								<div class="col-md-4 caixaDireita">
+									<h5 class="titulos">Adicionados ao projeto</h5>
+									<hr>
+									<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
+										<div class="col-lg-6">
+											<div class="input-group opcoes" ng-click="selectDireita(x)">
+												<span class="input-group-addon">
+													<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.codigo}}" aria-label="Checkbox for following text input">
+												</span>
+												<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row" ng-show="valorMaior">
+							<div class="col-md-2"></div>
+							<div class="col-md-8 cadNot" >
+								<label for=""><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Valor inválido!</label>
+							</div>
+							<div class="col-md-2"></div>
+						</div>
+
+						<div class="modal-footer">
+							<div class="col-md-10"></div>
+							<div class="col-md-2">
+								<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
+									Salvar
+								</button>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="row" ng-show="cadOk">
+						<br>
+						<div class="col-md-2"></div>
+						<div class="col-md-8 cadOk" >
+							<label for=""><i class="fa fa-check" aria-hidden="true"></i> Cadastro realizado com sucesso!!!</label>
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+	      </div>
+
+	    </div>
+
+	  </div>
+	</div>
 
 </section>
