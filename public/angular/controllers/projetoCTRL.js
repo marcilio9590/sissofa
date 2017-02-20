@@ -33,7 +33,7 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		vm.projeto.nomeProj = projeto.nomeProj;
 		vm.projeto.descricaoProj = projeto.descrProj;
 
-		
+		vm.adicionadosProjeto = projeto.itensProjeto;
 			$("#myModal").modal();
 			console.log(projeto);
 	}
@@ -50,34 +50,71 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		}
 
 	}
-	vm.selectDireita = function(item){
+	vm.selectDireitaFunction = function(item){
+		console.log(item);
 		vm.selectDireita = item;
 		vm.mostraRemover = true;
-		vm.botaoRadioDireita = item.codigo;
+		if (!angular.isUndefined(item.codigo)) {
+			vm.botaoRadioDireita = item.codigo;
+		}else{
+			vm.botaoRadioDireita = item.idItem;
+		}
+
 	}
 
 	vm.removerItem = function(){
-		for (var i = 0; i < vm.listEstoque.length; i++) {
-			if(vm.listEstoque[i].codigo == vm.selectDireita.codigo){
-				if (vm.selectDireita.tipo == "quantidade") {
-					vm.listEstoque[i].quantidade += vm.selectDireita.novaQtd;
-					vm.estoqueVazio = false;
-				}else if(vm.selectDireita.tipo == "metro"){
-					vm.listEstoque[i].metro += vm.selectDireita.novoMetro;
-					vm.estoqueVazio = false;
+		if(!angular.isUndefined(vm.selectDireita.codigo)){
+
+			for (var i = 0; i < vm.listEstoque.length; i++) {
+				if(vm.listEstoque[i].codigo == vm.selectDireita.codigo){
+					if (vm.selectDireita.tipo == "quantidade") {
+						vm.listEstoque[i].quantidade += vm.selectDireita.qtd;
+						vm.estoqueVazio = false;
+					}else if(vm.selectDireita.tipo == "metro"){
+						vm.listEstoque[i].metro += vm.selectDireita.qtd;
+						vm.estoqueVazio = false;
+					}
+				}
+			}
+			if(vm.select.codigo === vm.selectDireita.codigo){
+				vm.mostra = true;
+			}
+			for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+				if(vm.adicionadosProjeto[i].codigo === vm.selectDireita.codigo){
+					vm.adicionadosProjeto.splice(i,1);
+					vm.mostraRemover = false;
+					vm.botaoRadioDireita = 0;
+				}
+			}
+
+		}else{
+
+			for (var i = 0; i < vm.listEstoque.length; i++) {
+				if(vm.listEstoque[i].codigo == vm.selectDireita.idItem){
+					if (vm.selectDireita.tipo == "quantidade") {
+						vm.listEstoque[i].quantidade += vm.selectDireita.qtd;
+						vm.estoqueVazio = false;
+					}else if(vm.selectDireita.tipo == "metro"){
+						vm.listEstoque[i].metro += vm.selectDireita.qtd;
+						vm.estoqueVazio = false;
+					}
+				}
+			}
+			if(vm.select.codigo === vm.selectDireita.idItem){
+				vm.mostra = true;
+			}
+			for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+				if(vm.adicionadosProjeto[i].idItem === vm.selectDireita.idItem){
+					vm.adicionadosProjeto.splice(i,1);
+					vm.mostraRemover = false;
+					vm.botaoRadioDireita = 0;
 				}
 			}
 		}
-		if(vm.select.codigo === vm.selectDireita.codigo){
-			vm.mostra = true;
-		}
-		for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
-			if(vm.adicionadosProjeto[i].codigo === vm.selectDireita.codigo){
-				vm.adicionadosProjeto.splice(i,1);
-				vm.mostraRemover = false;
-				vm.botaoRadioDireita = 0;
-			}
-		}
+
+
+
+
 	}
 
 	vm.adicionarItem = function(qtdProjeto,tipo){
@@ -96,9 +133,16 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 				vm.select.tipo = "quantidade";
 				if (vm.adicionadosProjeto.length > 0) {
 					for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
-						if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
-							vm.adicionadosProjeto[i].novaQtd += qtdProjeto;
-							vm.achouIgual = true;
+						if (!angular.isUndefined(vm.adicionadosProjeto[i].codigo)) {
+							if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
+								vm.adicionadosProjeto[i].novaQtd += qtdProjeto;
+								vm.achouIgual = true;
+							}
+						}else{
+							if(vm.adicionadosProjeto[i].idItem === vm.select.codigo){
+								vm.adicionadosProjeto[i].qtd += qtdProjeto;
+								vm.achouIgual = true;
+							}
 						}
 					}
 				}
@@ -128,9 +172,17 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 
 				if (vm.adicionadosProjeto.length > 0) {
 					for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
-						if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
-							vm.adicionadosProjeto[i].novoMetro += qtdProjeto;
-							vm.achouIgual = true;
+						//if usado para editar projeto
+						if (!angular.isUndefined(vm.adicionadosProjeto[i].codigo)) {
+							if(vm.adicionadosProjeto[i].codigo === vm.select.codigo){
+								vm.adicionadosProjeto[i].novoMetro += qtdProjeto;
+								vm.achouIgual = true;
+							}
+						}else{
+							if(vm.adicionadosProjeto[i].idItem === vm.select.codigo){
+								vm.adicionadosProjeto[i].qtd += qtdProjeto;
+								vm.achouIgual = true;
+							}
 						}
 					}
 				}
@@ -275,5 +327,11 @@ myApp.controller("projetoCTRL", function($scope,$http,projetoFactory,produtosFac
 		vm.listarProjetos();
 	}
 	activate();
+
+	//função que é ativada quando o modal de edição é fechado
+	$('#myModal').on('hidden.bs.modal', function (e) {
+	  vm.step1 = true;
+		vm.step2 = false;
+	})
 
 });

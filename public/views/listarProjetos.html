@@ -138,9 +138,10 @@
 
 									<div class="row">
 										 <div class="modal-footer">
-											<div class="col-md-8"></div>
-											<div class="col-md-2">
-												<br><button class="btn btn-success" ng-click="continuar()" ng-disabled="">Continuar</button>
+											<div class="col-md-12">
+												<br>
+												<button class="btn btn-primary" ng-click="continuar()" ng-disabled="">Editar Itens <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+												<button class="btn btn-success" ng-click="salvarEdicao()" ng-disabled="">Salvar <i class="fa fa-check" aria-hidden="true"></i></button>
 											</div>
 										</div>
 									</div>
@@ -213,11 +214,11 @@
 									<hr>
 									<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
 										<div class="col-lg-6">
-											<div class="input-group opcoes" ng-click="selectDireita(x)">
+											<div class="input-group opcoes" ng-click="selectDireitaFunction(x)">
 												<span class="input-group-addon">
-													<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.codigo}}" aria-label="Checkbox for following text input">
+													<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.idItem}}" aria-label="Checkbox for following text input">
 												</span>
-												<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+												<label class="form-control opcoes" style="width: 252px;">{{x.idItem}} - {{x.nome}}</label>
 											</div>
 										</div>
 									</div>
@@ -236,8 +237,8 @@
 						<div class="modal-footer">
 							<div class="col-md-10"></div>
 							<div class="col-md-2">
-								<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
-									Salvar
+								<button class="btn btn-success" ng-click ="SalvarEdicao()" type="button">
+									Salvar <i class="fa fa-check" aria-hidden="true"></i>
 								</button>
 							</div>
 						</div>

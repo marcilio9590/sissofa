@@ -22,7 +22,7 @@
 								<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="projeto.telCli">
 
 							</div>
-						</div> 
+						</div>
 						<div class="row">
 							<div class="col-md-12">
 								<label for="descricao">Endereço do Cliente</label>
@@ -67,14 +67,14 @@
 		<div ng-if="step2">
 			<center>
 				<h1>Itens do projeto</h1>
-			</center>	
+			</center>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="col-md-4 caixaEsquerda">
 						<h5 class="titulos">Itens Cadastradados</h5>
 						<hr>
 						<div class="boxIntLeft">
-							
+
 							<div class="row itemsEstoque" ng-repeat="x in listEstoque">
 								<div class="col-lg-6">
 									<div class="input-group opcoes" ng-click="selecionar(x)">
@@ -87,18 +87,18 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="col-md-4 caixaMeio">
 						<div ng-if="mostra">
 							<h5 class="titulos">Preencha Corretamente</h5>
 							<hr>
 							<label  ng-if="select.quantidade !== 0">Quantidade disponível: {{select.quantidade}}</label>
-							<label ng-if="select.metro !== 0">Metros disponíveis: {{select.metro}}m</label>	
+							<label ng-if="select.metro !== 0">Metros disponíveis: {{select.metro}}m</label>
 							<div class="input-group">
 								<input type="number" class="form-control" name="tipo" ng-model="select.qtdProjeto" placeholder="Digite..." ng-required />
 								<span class="input-group-btn">
 									<button class="btn btn-success" ng-disabled="tipo.$invalid" ng-if="select.quantidade !== 0" ng-click ="adicionarItem(select.qtdProjeto,'quantidade')" type="button">Add >></button>
-									
+
 									<button class="btn btn-success" ng-click ="adicionarItem(select.qtdProjeto,'metro')" ng-disabled="tipo.$invalid" ng-if="select.metro !== 0" type="button">Add >></button>
 								</span>
 							</div>
@@ -110,7 +110,7 @@
 							</div>
 							<div class="col-md-2"></div>
 						</div>
-						
+
 						<div ng-if="mostraRemover" class="botaoMeioRemover">
 							<button class="btn btn-success" ng-click ="removerItem()" ng-disabled="tipo.$invalid" type="button">
 								<< Remover
@@ -123,7 +123,7 @@
 						<hr>
 						<div class="row itemsEstoque" ng-repeat="x in adicionadosProjeto">
 							<div class="col-lg-6">
-								<div class="input-group opcoes" ng-click="selectDireita(x)">
+								<div class="input-group opcoes" ng-click="selectDireitaFunction(x)">
 									<span class="input-group-addon">
 										<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.codigo}}" aria-label="Checkbox for following text input">
 									</span>
@@ -146,7 +146,7 @@
 				<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
 					Salvar
 				</button>
-			</div>	
+			</div>
 		</div>
 		<div class="row" ng-show="cadOk">
 			<br>
@@ -157,4 +157,3 @@
 			<div class="col-md-2"></div>
 		</div>
 	</section>
-

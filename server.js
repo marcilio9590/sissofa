@@ -170,7 +170,7 @@ app.post('/projeto/salvar', function(req, res){
 
 			}
 		});
-	}	
+	}
 });
 
 app.get('/projeto/listar', function(req, res){
@@ -185,7 +185,7 @@ app.get('/projeto/listar', function(req, res){
 
 app.get('/projeto/ItensProjeto/:id', function(req, res){
 	var id = req.params.id;
-	var selectItensProjeto = 'SELECT ip.*, e.nome FROM itensprojetos ip INNER JOIN estoque e ON ' 
+	var selectItensProjeto = 'SELECT ip.*, e.nome FROM itensprojetos ip INNER JOIN estoque e ON '
 	+'e.id = ip.idItem WHERE ip.idProjeto = ?';
 	pool.query(selectItensProjeto, id, function(err, rows){
 		if(err) throw err;
@@ -203,8 +203,8 @@ app.get('/projeto/deletar/:id',function(req, res){
 		else {
 			res.send(true);
 		}
-	});	
-});	
+	});
+});
 
 app.post('/projeto/deletar/itens',function(req, res){
 	var itens = req.body;
@@ -218,7 +218,23 @@ app.post('/projeto/deletar/itens',function(req, res){
 		}else {
 			res.send(true);
 		}
-	});	
+	});
+});
+
+app.put('/projeto/editar/itens',function(req,res){
+
+});
+
+app.put('/projeto/editar/:id',function(req,res){
+	var projeto = req.body;
+	var id = req.params.id;
+	var updateProjeto = "UPDATE projetos SET ? WHERE id = "+id;
+	 pool.query(updateProjeto,projeto, function(err, rows){
+		 if(err) throw err;
+		 else {
+			 res.send(true);
+		 }
+	 });
 });
 
 app.listen(3000, function(){
