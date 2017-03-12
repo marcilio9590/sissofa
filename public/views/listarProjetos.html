@@ -172,7 +172,7 @@
 													<span class="input-group-addon">
 														<input name="itemAdd" ng-model="botaoRadio" value="{{x.codigo}}" type="radio" aria-label="Checkbox for following text input">
 													</span>
-													<label class="form-control opcoes" style="width: 252px;">{{x.codigo}} - {{x.nome}}</label>
+													<label class="form-control opcoes" style="width: 220px;">{{x.codigo}} - {{x.nome}}</label>
 												</div>
 											</div>
 										</div>
@@ -203,7 +203,7 @@
 									</div>
 
 									<div ng-if="mostraRemover" class="botaoMeioRemover">
-										<button class="btn btn-success" ng-click ="removerItem()" ng-disabled="tipo.$invalid" type="button">
+										<button class="btn btn-success" ng-click ="removerItemBase()" ng-disabled="tipo.$invalid" type="button">
 											<< Remover
 										</button>
 									</div>
@@ -218,7 +218,7 @@
 												<span class="input-group-addon">
 													<input name="item" type="radio" ng-model="botaoRadioDireita" value="{{x.idItem}}" aria-label="Checkbox for following text input">
 												</span>
-												<label class="form-control opcoes" style="width: 252px;">{{x.idItem}} - {{x.nome}}</label>
+												<label class="form-control opcoes" style="width: 220px;">{{x.idItem}} - {{x.nome}}</label>
 											</div>
 										</div>
 									</div>
@@ -237,7 +237,7 @@
 						<div class="modal-footer">
 							<div class="col-md-10"></div>
 							<div class="col-md-2">
-								<button class="btn btn-success" ng-click ="SalvarEdicao()" type="button">
+								<button class="btn btn-success" ng-click ="salvarEdicao()" type="button">
 									Salvar <i class="fa fa-check" aria-hidden="true"></i>
 								</button>
 							</div>

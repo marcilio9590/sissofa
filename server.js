@@ -209,13 +209,17 @@ app.get('/projeto/deletar/:id',function(req, res){
 app.post('/projeto/deletar/itens',function(req, res){
 	var itens = req.body;
 	var query = '';
+	console.log('montando query para deletar itens do projeto')
 	itens.forEach(function (item) {
 		query += mysql.format("DELETE FROM itensprojetos WHERE id = ?; ", item.id);
 	});
+	console.log(query);
 	pool.query(query, function(err, rows){
 		if(err){
+			console.log('ação realizada com erro');
 			res.send(err);
 		}else {
+			console.log('ação realizada com sucesso');
 			res.send(true);
 		}
 	});
