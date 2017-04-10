@@ -32,7 +32,7 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 		vm.projeto.endCli = projeto.endCli;
 		vm.projeto.nomeProj = projeto.nomeProj;
 		vm.projeto.descricaoProj = projeto.descrProj;
-
+		vm.projeto.codigo = projeto.codigo;
 		vm.adicionadosProjeto = projeto.itensProjeto;
 		$("#myModal").modal();
 	}
@@ -329,8 +329,16 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 			}
 		];
 		projetoService.apagarItemProjeto(array).then(function successCallback() {
-			vm.listarEstoque();
-			vm.continuar();
+			vm.listarProjetos();
+			vm.data.forEach(function(projeto) {
+				projeto.itensProjeto.forEach(function(item) {
+					if (item.codigo === vm.projeto.codigo) {
+						vm.editarProjeto(projeto);
+					}
+				});
+				
+			});
+
 		}, function errorCallback(response) {
 			alert(response.data);
 		});

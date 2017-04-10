@@ -47,6 +47,10 @@
 								<label ng-if="item.tipo == 'quantidade'" for="">Quantidade: {{item.qtd | number:2}}</label>
 								<hr ng-hide="$index+1 == array.itensProjeto.length"/>
 							</div>
+							<div ng-if="array.itensProjeto.length === 0 && mostraBotao[$index]" >
+								<br>
+								<label>Não há itens.</label>
+							</div>
 						</td>
 						<td>
 							<button ng-click="editarProjeto(array)"	class="btn btn-sm btn-primary btn-xs" title="Editar">
@@ -85,7 +89,7 @@
 					<div class="row">
 
 						<div class="col-md-12" ng-if="step1">
-							<h2 class="titulos" align="center">Editando projeto {{projetoEditando.codigo}}</h2>
+							<h2 class="titulos" align="center">Editando projeto {{projeto.codigo}}</h2>
 						</div>
 						<div class="col-md-12" ng-if="step2">
 								<h2  class="titulos" align="center">Itens do projeto</h2>
