@@ -57,6 +57,11 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 
 	vm.salvarEdicao = function(obj){
 		var objConvert = produtosFactory.convertEstoqueToBack(obj);
+		if(vm.flag){
+			objConvert[0].quantidade = 0;
+		}else{
+			objConvert[0].metro = 0;
+		}
 		$http({
 			method: 'PUT',
 			url: '/estoque/editarItem/'+obj.codigo,
@@ -114,11 +119,11 @@ myApp.controller("produtoCtrl", function($scope,$http,$timeout,produtosFactory){
 
 	vm.editar = function(obj){
 		vm.produto.nome = obj.nome;
-		vm.produto.preco = obj.preco;
+		vm.produto.preco = Number(obj.preco);
 		vm.produto.codigo = obj.codigo;
 		if (obj.metro != 0){
 			vm.flag = true;
-			vm.produto.metro = obj.metro;
+			vm.produto.metro = Number(obj.metro);
 		}
 		if (obj.quantidade != 0){
 			vm.flag = false;

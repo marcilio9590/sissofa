@@ -76,7 +76,7 @@ myApp.factory('projetoFactory', function(){
 
 		return objProjetoBack;
 	}
-	var Projeto = function(codigo,nomeProj,descrProj,nomeClie,telCli,endCli){
+	function Projeto(codigo,nomeProj,descrProj,nomeClie,telCli,endCli){
 		this.codigo = codigo;
 		this.nomeProj = nomeProj;
 		this.descrProj = descrProj;
