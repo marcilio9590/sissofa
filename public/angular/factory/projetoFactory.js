@@ -89,9 +89,9 @@ myApp.factory('projetoFactory', function(){
 			item.id,
 			item.nome,
 			item.descricao,
-			item.nomeCliente,
-			item.telefoneCliente,
-			item.enderecoCliente
+			item.nomecliente,
+			item.telefonecliente,
+			item.enderecocliente
 			);
 	}
 	function convertProjetoToFront(itens){
@@ -114,8 +114,8 @@ myApp.factory('projetoFactory', function(){
 	function convertItemsProjetoFront(item){
 		return new ItemProjetoFront(
 			item.id,
-			item.idProjeto,
-			item.idItem,
+			item.idprojeto,
+			item.iditem,
 			item.qtd,
 			item.tipo,
 			item.nome
