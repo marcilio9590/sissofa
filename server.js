@@ -4,6 +4,15 @@ var bodyParser = require('body-parser');
 var InsertQuery = require('mysql-insert-multiple');
 var retornoProjeto = 0;
 
+app.set('port', (process.env.PORT || 5000));
+
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());  //o body parser recebe um json e transforma em objeto para o servidor
+
+// views is directory for all template files
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 const pg = require('pg')
 var config = {
 	host: 'localhost', // server name or IP address;
@@ -14,8 +23,6 @@ var config = {
 };
 
 const pool = new pg.Pool(config);
-app.use(express.static('public'));
-app.use(bodyParser.json());  //o body parser recebe um json e transforma em objeto para o servidor
 
 app.get('/estoque/listar', function (req, res) {
 	var selectEstoque = 'SELECT * FROM estoque';
@@ -235,6 +242,6 @@ app.put('/projeto/editar/:id', function (req, res) {
 	});
 });
 
-app.listen(3000, function () {
-	console.log('Servidor rodando na porta 3000!');
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
