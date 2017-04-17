@@ -4,8 +4,8 @@ myApp.controller("indexCTRL", function ($scope, $http, loginService, $location) 
 	vm.erroLogin = false;
 	vm.efetuarLogin = function (user) {
 		loginService.login(user).then(function (response) {
-			var user = response.data;
-			if (user.length > 0) {
+			if (response.data.length > 0) {
+				vm.user = response.data[0];
 				vm.logado = true;
 				vm.erroLogin = false;
 			} else {

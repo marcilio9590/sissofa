@@ -66,7 +66,7 @@
 	<br><br><br>
 	<section id="secondary_bar">
 		<div class="user">
-			<p ng-show="logado">Nome do Usuário logado</p>
+			<p ng-show="logado">{{user.login}}</p>
 			<a ng-show="logado" class="logout_user" ng-click="logout()" title="Logout">Logout</a>
 		</div>
 		<div class="breadcrumbs_container">
@@ -80,7 +80,7 @@
 
 	<aside ng-show="logado" id="sidebar" class="column">
 		<form class="quick_search">
-			<input type="text" placeholder="N° do Projeto">
+			<input type="text" placeholder="Código do Projeto">
 		</form>
 		<hr/>
 		<h3>Projetos</h3>

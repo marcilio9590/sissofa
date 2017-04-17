@@ -54,7 +54,7 @@ const pool = new pg.Pool(config);
 app.post('/login', function (req, res) {
 	var user = req.body;
 	user.senha = md5(user.senha);
-	var selectUser = 'SELECT * FROM usuarios WHERE login = $1 and senha = $2';
+	var selectUser = 'SELECT u.login, u.id FROM usuarios u WHERE login = $1 and senha = $2';
 	pool.query(selectUser, [user.login, user.senha]) // find the user from id;
 		.then(function (data) {
 			if (data.rows.length > 0) {
