@@ -128,3 +128,24 @@ hr{
 .opcoes{
 	cursor: pointer;
 }
+.CaixaLogin{
+	margin-top: 100px;	
+}
+.meioLogin{
+	border: 1px solid #1e1e1e;
+	border-radius: 5px;
+	padding: 50px;
+}
+.btnLogin{
+	background: #1e1e1e;
+	color: #fff;
+}
+.btnLogin:hover{
+	color: #ccc;
+}
+.avisoLogin{
+	background: #cc0000;
+	color: #fff;
+	border-radius: 5px;
+	padding: 10px;
+}

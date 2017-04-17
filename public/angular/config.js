@@ -1,6 +1,10 @@
 angular.module('myApp')
 .config(function($routeProvider, $locationProvider){
 	$routeProvider
+	.when('/login', {
+		templateUrl: 'views/login.html',
+		controller: 'loginCtrl'
+	})
 	.when('/projeto', {
 		templateUrl: 'views/projeto.html',
 		controller: 'projetoCTRL'

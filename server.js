@@ -3,16 +3,27 @@ var app = express();
 var bodyParser = require('body-parser');
 var InsertQuery = require('mysql-insert-multiple');
 var mysql = require('mysql');
+var md5 = require('md5');
+var session = require('express-session');
+
 var retornoProjeto = 0;
 
 app.set('port', (process.env.PORT || 5000));
 
+
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());  //o body parser recebe um json e transforma em objeto para o servidor
+
+app.use(session({
+	secret: "6a54sd65a4sd651as65d",
+	resave: false,
+	saveUninitialized: true
+}));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
 
 const pg = require('pg')
 
@@ -40,6 +51,30 @@ var config = {
 
 const pool = new pg.Pool(config);
 
+app.post('/login', function (req, res) {
+	var user = req.body;
+	user.senha = md5(user.senha);
+	var selectUser = 'SELECT * FROM usuarios WHERE login = $1 and senha = $2';
+	pool.query(selectUser, [user.login, user.senha]) // find the user from id;
+		.then(function (data) {
+			if (data.rows.length > 0) {
+				req.session.user = data.rows[0];
+			}
+			res.send(data.rows);
+		}).catch(function (err) {
+			console.log(err);
+		});
+});
+
+app.get('/sessaoConsultar', function (req, res) {
+	res.send(req.session.user);
+});
+
+app.get('/logout', function (req, res) {
+	req.session.user = null;
+	res.send(req.session.user);
+});
+
 app.get('/estoque/listar', function (req, res) {
 	var selectEstoque = 'SELECT * FROM estoque';
 	pool.query(selectEstoque) // find the user from id;
@@ -66,10 +101,10 @@ app.post('/estoque/salvarItem', function (req, res) {
 	var obj = req.body
 	if (obj.nome != 'undefined' && obj.preco != 'undefined') {
 		if (obj.metro == null) {
-			obj.metro = 0;
+			// obj.metro = 0;
 		}
 		if (obj.quantidade == "" || obj.quantidade == null) {
-			obj.quantidade = 0;
+			// obj.quantidade = 0;
 		}
 		var salvarItem = "INSERT INTO estoque(nome, preco, metro, quantidade) VALUES ($1, $2, $3, $4)";
 		pool.query(salvarItem, [obj.nome, obj.preco, obj.metro, obj.quantidade]) // find the user from id;
