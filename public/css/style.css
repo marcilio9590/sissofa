@@ -144,8 +144,5 @@ hr{
 	color: #ccc;
 }
 .avisoLogin{
-	background: #cc0000;
-	color: #fff;
-	border-radius: 5px;
-	padding: 10px;
+	text-align: center;
 }

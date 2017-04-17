@@ -7,6 +7,7 @@ myApp.controller("indexCTRL", function ($scope, $http, loginService, $location) 
 			var user = response.data;
 			if (user.length > 0) {
 				vm.logado = true;
+				vm.erroLogin = false;
 			} else {
 				vm.erroLogin = true;
 				vm.loginAviso = "Dados não encontrados.";

@@ -5,21 +5,21 @@
             <form name="loginForm">
                 <div class="form-group">
                     <label for="login">Usuário:</label>
-                    <input type="text" ng-model="user.login" class="form-control" id="login">
+                    <input required type="text" ng-model="user.login" class="form-control" id="login">
                 </div>
                 <div class="form-group">
                     <label for="pwd">Senha:</label>
-                    <input type="password" ng-model="user.senha" class="form-control" id="pwd">
+                    <input required type="password" ng-model="user.senha" class="form-control" id="pwd">
                 </div>
                 <button ng-disabled="loginForm.$invalid" ng-click="efetuarLogin(user)" class="btn btnLogin">Entrar</button>
             </form>
         </div>
         <div class="col-md-4"></div>
     </div>
-    <div ng-show="erroLogin" class="avisoLogin">
+    <div ng-show="erroLogin">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h3 class="avisoLogin">{{loginAviso}}</h3> <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            <h3 class="avisoLogin">{{loginAviso}} <i class="fa fa-exclamation-circle" aria-hidden="true"></i></h3> 
         </div>
         <div class="col-md-4"></div>
     </div>
