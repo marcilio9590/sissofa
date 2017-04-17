@@ -30,24 +30,24 @@ const pg = require('pg')
 /**
  * Localhost DEV
  */
-var config = {
-	host: 'localhost', // server name or IP address;
-	port: 5432,
-	database: 'criart',
-	user: 'postgres',
-	password: '123456'
-};
+// var config = {
+// 	host: 'localhost', // server name or IP address;
+// 	port: 5432,
+// 	database: 'criart',
+// 	user: 'postgres',
+// 	password: '123456'
+// };
 
 /**
  * Heroku Base
  */
-// var config = {
-// 	host: 'ec2-107-20-195-181.compute-1.amazonaws.com', // server name or IP address;
-// 	port: 5432,
-// 	database: 'd8emb3s8qqvb61',
-// 	user: 'lzsjaoysjdcmdk',
-// 	password: 'a07b7e3000e365934f5006accd93e5d8d30d7e39eee6b6b7475a44cda93a8dd1'
-// };
+var config = {
+	host: 'ec2-107-20-195-181.compute-1.amazonaws.com', // server name or IP address;
+	port: 5432,
+	database: 'd8emb3s8qqvb61',
+	user: 'lzsjaoysjdcmdk',
+	password: 'a07b7e3000e365934f5006accd93e5d8d30d7e39eee6b6b7475a44cda93a8dd1'
+};
 
 const pool = new pg.Pool(config);
 
