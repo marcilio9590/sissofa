@@ -93,7 +93,7 @@
 							<h5 class="titulos">Preencha Corretamente</h5>
 							<hr>
 							<label  ng-if="select.quantidade !== 0">Quantidade disponível: {{select.quantidade}}</label>
-							<label ng-if="select.metro !== 0">Metros disponíveis: {{select.metro}}m</label>
+							<label ng-if="select.metro !== '0.00'">Metros disponíveis: {{select.metro}}m</label>
 							<div class="input-group">
 								<input type="number" class="form-control" name="tipo" ng-model="select.qtdProjeto" placeholder="Digite..." ng-required />
 								<span class="input-group-btn">
