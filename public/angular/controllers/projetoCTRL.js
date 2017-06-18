@@ -227,7 +227,7 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 	}
 
 	vm.listarProjetos = function () {
-		$http({
+		return $http({
 			method: 'GET',
 			url: '/projeto/listar'
 		}).then(function successCallback(response) {
@@ -322,6 +322,11 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 
 	}
 
+	vm.voltarStep1 = function(){
+		vm.step1 = true;
+		vm.step2 = false;
+	}
+
 	vm.removerItemBase = function(){
 		var array = [
 			{
@@ -329,16 +334,17 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 			}
 		];
 		projetoService.apagarItemProjeto(array).then(function successCallback() {
-			vm.listarProjetos();
-			vm.data.forEach(function(projeto) {
-				projeto.itensProjeto.forEach(function(item) {
-					if (item.codigo === vm.projeto.codigo) {
-						vm.editarProjeto(projeto);
-					}
-				});
-				
+			vm.listarProjetos().then(function successCallback(){
+				for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
+				if (vm.adicionadosProjeto[i].id === vm.selectDireita.id) {
+					vm.adicionadosProjeto.splice(i, 1);
+					vm.mostraRemover = false;
+					vm.botaoRadioDireita = 0;
+				}
+			}
+			}).catch(function error(res){
+				console.log("ERRO "+res)
 			});
-
 		}, function errorCallback(response) {
 			alert(response.data);
 		});

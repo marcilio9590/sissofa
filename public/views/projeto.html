@@ -99,7 +99,7 @@
 								<span class="input-group-btn">
 									<button class="btn btn-success" ng-disabled="tipo.$invalid" ng-if="select.quantidade !== 0" ng-click ="adicionarItem(select.qtdProjeto,'quantidade')" type="button">Add >></button>
 
-									<button class="btn btn-success" ng-click ="adicionarItem(select.qtdProjeto,'metro')" ng-disabled="tipo.$invalid" ng-if="select.metro !== 0" type="button">Add >></button>
+									<button class="btn btn-success" ng-click ="adicionarItem(select.qtdProjeto,'metro')" ng-disabled="tipo.$invalid" ng-if="select.metro !== '0.00'" type="button">Add >></button>
 								</span>
 							</div>
 						</div>
@@ -143,6 +143,9 @@
 				<div class="col-md-2"></div>
 			</div>
 			<div class="botaoSalvar">
+				<button class="btn btn-danger" ng-click ="voltarStep1()" type="button">
+					Voltar
+				</button>
 				<button class="btn btn-success" ng-click ="SalvarProjeto()" type="button">
 					Salvar
 				</button>
