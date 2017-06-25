@@ -43,7 +43,7 @@ myApp.factory('projetoFactory', function () {
 				item.idItem ? item.idItem : item.codigo,
 				item.idProjeto,
 				item.tipo,
-				item.qtd ? item.qtd : item.quantidade
+				item.qtd ? item.qtd : item.novaQtd
 			);
 		}
 
