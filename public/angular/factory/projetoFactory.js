@@ -1,60 +1,63 @@
 // Factory
-myApp.factory('projetoFactory', function(){
+myApp.factory('projetoFactory', function () {
 
-	var itemProjetoBack = function(idItem,tipo,metroAtual){
+	var itemProjetoBack = function (idItem, tipo, metroAtual) {
 		this.idItem = idItem;
 		this.tipo = tipo;
 		this.qtd = metroAtual;
 	}
 
-	var itemProjetoUpdateBack = function(idItem,tipo,metroAtual){
-		this.id = idItem;
+	var itemProjetoUpdateBack = function (idItem, idProjeto, tipo, metroAtual) {
+		this.iditem = idItem;
+		this.idprojeto = idProjeto;
 		this.tipo = tipo;
 		this.qtd = metroAtual;
 	}
 
-	function convertItensProjetoBack(item){
+	function convertItensProjetoBack(item) {
 		if (item.tipo === 'metro') {
 			return new itemProjetoBack(
 				item.codigo,
 				item.tipo,
 				item.novoMetro
-				);
-		}else if(item.tipo === 'quantidade'){
+			);
+		} else if (item.tipo === 'quantidade') {
 			return new itemProjetoBack(
 				item.codigo,
 				item.tipo,
 				item.novaQtd
-				);
+			);
 		}
-	}
-	
-	function convertItensUpdateProjetoBack(item){
-		if (item.tipo === 'metro') {
-			return new itemProjetoUpdateBack(
-				item.codigo,
-				item.tipo,
-				item.novoMetro
-				);
-		}else if(item.tipo === 'quantidade'){
-			return new itemProjetoUpdateBack(
-				item.codigo,
-				item.tipo,
-				item.novaQtd
-				);
-		}
-		
 	}
 
-	var projetoBack = function(nome, descricao, nomeCliente, telefoneCliente, enderecoCliente) {
-		this.nome =  nome;
-		this.descricao =  descricao;
-		this.nomeCliente =  nomeCliente;
-		this.telefoneCliente =  telefoneCliente;
+	function convertItensUpdateProjetoBack(item) {
+		if (item.tipo === 'metro') {
+			return new itemProjetoUpdateBack(
+				item.idItem ? item.idItem : item.codigo,
+				item.idProjeto,
+				item.tipo,
+				item.qtd ? item.qtd : item.novoMetro
+			);
+		} else if (item.tipo === 'quantidade') {
+			return new itemProjetoUpdateBack(
+				item.idItem ? item.idItem : item.codigo,
+				item.idProjeto,
+				item.tipo,
+				item.qtd ? item.qtd : item.quantidade
+			);
+		}
+
+	}
+
+	var projetoBack = function (nome, descricao, nomeCliente, telefoneCliente, enderecoCliente) {
+		this.nome = nome;
+		this.descricao = descricao;
+		this.nomeCliente = nomeCliente;
+		this.telefoneCliente = telefoneCliente;
 		this.enderecoCliente = enderecoCliente;
 	};
 
-	function convertProjetoToBack(obj){
+	function convertProjetoToBack(obj) {
 		var objProjetoBack = {};
 		objProjetoBack.itens = [];
 		objProjetoBack.projeto = {};
@@ -65,7 +68,7 @@ myApp.factory('projetoFactory', function(){
 			obj.projeto.nomeCli,
 			obj.projeto.telCli,
 			obj.projeto.endCli
-			);
+		);
 
 		for (var i = 0; i < obj.itens.length; i++) {
 			objProjetoBack.itens.push(convertItensProjetoBack(obj.itens[i]));
@@ -76,7 +79,7 @@ myApp.factory('projetoFactory', function(){
 
 		return objProjetoBack;
 	}
-	function Projeto(codigo,nomeProj,descrProj,nomeClie,telCli,endCli){
+	function Projeto(codigo, nomeProj, descrProj, nomeClie, telCli, endCli) {
 		this.codigo = codigo;
 		this.nomeProj = nomeProj;
 		this.descrProj = descrProj;
@@ -84,7 +87,7 @@ myApp.factory('projetoFactory', function(){
 		this.telCli = telCli;
 		this.endCli = endCli;
 	}
-	function convertProjetoFront(item){
+	function convertProjetoFront(item) {
 		return new Projeto(
 			item.id,
 			item.nome,
@@ -92,9 +95,9 @@ myApp.factory('projetoFactory', function(){
 			item.nomecliente,
 			item.telefonecliente,
 			item.enderecocliente
-			);
+		);
 	}
-	function convertProjetoToFront(itens){
+	function convertProjetoToFront(itens) {
 		listProjetos = [];
 		for (var i = 0; i < itens.length; i++) {
 			listProjetos.push(convertProjetoFront(itens[i]));
@@ -102,7 +105,7 @@ myApp.factory('projetoFactory', function(){
 		return listProjetos;
 	}
 
-	var ItemProjetoFront = function(id,idProjeto,idItem,qtd,tipo,nome){
+	var ItemProjetoFront = function (id, idProjeto, idItem, qtd, tipo, nome) {
 		this.id = id;
 		this.idProjeto = idProjeto;
 		this.idItem = idItem;
@@ -111,7 +114,7 @@ myApp.factory('projetoFactory', function(){
 		this.nome = nome;
 	}
 
-	function convertItemsProjetoFront(item){
+	function convertItemsProjetoFront(item) {
 		return new ItemProjetoFront(
 			item.id,
 			item.idprojeto,
@@ -119,40 +122,40 @@ myApp.factory('projetoFactory', function(){
 			item.qtd,
 			item.tipo,
 			item.nome
-			);
+		);
 	}
-	 var ItemDeletBack = function(id){
-	 	this.id = id;
-	 }
-	 
-	function convertDeletItensToBack(item){
+	var ItemDeletBack = function (id) {
+		this.id = id;
+	}
+
+	function convertDeletItensToBack(item) {
 		return new ItemDeletBack(
 			item.id);
 	}
 
-	function convertItensProjetoToFront(items){
+	function convertItensProjetoToFront(items) {
 		listItems = [];
 		for (var i = 0; i < items.length; i++) {
 			listItems.push(convertItemsProjetoFront(items[i]));
 		}
 		return listItems;
-	} 
+	}
 
-	function convertItensToBack(items){
+	function convertItensToBack(items) {
 		listItems = [];
 		for (var i = 0; i < items.length; i++) {
 			listItems.push(convertDeletItensToBack(items[i]));
 		}
 		return listItems;
-	} 
+	}
 
 
 
 	var exports = {
-		convertProjetoToBack:convertProjetoToBack,
-		convertProjetoToFront:convertProjetoToFront,
-		convertItensToBack:convertItensToBack,
-		convertItensProjetoToFront:convertItensProjetoToFront
+		convertProjetoToBack: convertProjetoToBack,
+		convertProjetoToFront: convertProjetoToFront,
+		convertItensToBack: convertItensToBack,
+		convertItensProjetoToFront: convertItensProjetoToFront
 	};
 
 	return exports;

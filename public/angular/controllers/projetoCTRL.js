@@ -1,4 +1,4 @@
-myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produtosFactory,projetoService, $timeout) {
+myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produtosFactory, projetoService, $timeout) {
 	var vm = $scope;
 	vm.step1 = true;
 	vm.step2 = false;
@@ -319,31 +319,44 @@ myApp.controller("projetoCTRL", function ($scope, $http, projetoFactory, produto
 	}
 
 	vm.salvarEdicao = function () {
-
+		var obj = {};
+		obj.projeto = vm.projeto;
+		obj.itens = vm.adicionadosProjeto;
+		var proj = projetoFactory.convertProjetoToBack(obj);
+		proj.id = vm.projeto.codigo;
+		projetoService.editarProjeto(proj).then(function (response) {
+			$('#myModal').modal('hide');
+			vm.editOk = true;
+			$timeout(function () {
+				vm.editOk = false;
+			}, 3000);
+		}).catch(function () {
+			console.log('Deu erro ');
+		});
 	}
 
-	vm.voltarStep1 = function(){
+	vm.voltarStep1 = function () {
 		vm.step1 = true;
 		vm.step2 = false;
 	}
 
-	vm.removerItemBase = function(){
+	vm.removerItemBase = function () {
 		var array = [
 			{
-				"id":vm.selectDireita.id
+				"id": vm.selectDireita.id
 			}
 		];
 		projetoService.apagarItemProjeto(array).then(function successCallback() {
-			vm.listarProjetos().then(function successCallback(){
+			vm.listarProjetos().then(function successCallback() {
 				for (var i = 0; i < vm.adicionadosProjeto.length; i++) {
-				if (vm.adicionadosProjeto[i].id === vm.selectDireita.id) {
-					vm.adicionadosProjeto.splice(i, 1);
-					vm.mostraRemover = false;
-					vm.botaoRadioDireita = 0;
+					if (vm.adicionadosProjeto[i].id === vm.selectDireita.id) {
+						vm.adicionadosProjeto.splice(i, 1);
+						vm.mostraRemover = false;
+						vm.botaoRadioDireita = 0;
+					}
 				}
-			}
-			}).catch(function error(res){
-				console.log("ERRO "+res)
+			}).catch(function error(res) {
+				console.log("ERRO " + res)
 			});
 		}, function errorCallback(response) {
 			alert(response.data);

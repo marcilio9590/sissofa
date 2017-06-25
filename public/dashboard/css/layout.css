@@ -130,6 +130,7 @@ float: left;
 display: block;
 width: 16px;
 height: 35px;
+cursor: pointer;
 text-indent: -5000px;
 background: url(../images/icn_logout.png) center no-repeat;
 }

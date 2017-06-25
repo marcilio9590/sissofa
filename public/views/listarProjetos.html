@@ -56,7 +56,7 @@
 							<button ng-click="editarProjeto(array)" class="btn btn-sm btn-primary btn-xs" title="Editar">
 								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 							</button>
-							<button ng-click="deletarProjeto(array.codigo)" class="btn btn-danger btn-xs" title="Excluir">
+							<button ng-click="deletarProjeto(array.codigo)" confirm="Deseja realmente excluir ?" class="btn btn-danger btn-xs" title="Excluir">
 								<i class="fa fa-trash-o" aria-hidden="true"></i>
 							</button>
 						</td>
@@ -109,7 +109,7 @@
 										</div>
 										<div class="col-md-6">
 											<label for="telefone">Telefone do cliente</label>
-											<input ng-minlength="9" ng-maxlength="10" name="telCli" type="text" ng-required="true" class="form-control" ng-model="projeto.telCli">
+											<input ui-br-phone-number ng-maxlength="15" name="telCli" type="text" ng-required="true" class="form-control" ng-model="projeto.telCli">
 
 										</div>
 									</div>
@@ -147,7 +147,7 @@
 								</form>
 
 								<div ng-show="cadProjeto.telCli.$invalid && !cadProjeto.telCli.$pristine" class="erroTel">
-									<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> O telefone deve ser digitado da seguinte forma #####-####</label>
+									<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i>Telefone Inválido.</label>
 								</div>
 								<div ng-show="cadProjeto.descricaoProj.$invalid && !cadProjeto.descricaoProj.$pristine" class="erroTel">
 									<label for="erroTel"><i class="fa fa-exclamation-circle icone"></i> A descrição deve conter no minimo 10 caracteres</label>
@@ -202,7 +202,8 @@
 									</div>
 
 									<div ng-if="mostraRemover" class="botaoMeioRemover">
-										<button class="btn btn-danger" confirm="Deseja realmente excluir ?" ng-click="removerItemBase()" ng-disabled="tipo.$invalid" type="button">
+										<button class="btn btn-danger" confirm="Deseja realmente excluir ?" ng-click="removerItemBase()" ng-disabled="tipo.$invalid"
+										 type="button">
 											<< Remover
 										</button>
 									</div>
@@ -245,19 +246,17 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" ng-show="cadOk">
-					<br>
-					<div class="col-md-2"></div>
-					<div class="col-md-8 cadOk">
-						<label for=""><i class="fa fa-check" aria-hidden="true"></i> Cadastro realizado com sucesso!!!</label>
-					</div>
-					<div class="col-md-2"></div>
-				</div>
 			</div>
-
 		</div>
+	</div>
+	<div class="row" ng-show="editOk">
+		<br>
+		<div class="col-md-2"></div>
+		<div class="col-md-8 cadOk">
+			<label for=""><i class="fa fa-check" aria-hidden="true"></i>Projeto {{projeto.codigo}} editado com sucesso.</label>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
 
-	</div>
-	</div>
 
 </section>

@@ -1,4 +1,4 @@
-myApp.controller("indexCTRL", function ($scope, $http, loginService, $location) {
+myApp.controller("indexCTRL", function ($scope, $http, loginService, $location, $window) {
 	var vm = $scope;
 	vm.logado = false;
 	vm.erroLogin = false;
@@ -36,6 +36,7 @@ myApp.controller("indexCTRL", function ($scope, $http, loginService, $location) 
 		loginService.logout().then(function (response) {
 			vm.logado = false;
 			$location.path('/');
+			$window.location.reload();
 		}).catch(function (err) {
 			vm.loginAviso = "Erro no serviço de login.";
 		});

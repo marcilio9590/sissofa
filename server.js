@@ -30,24 +30,24 @@ const pg = require('pg')
 /**
  * Localhost DEV
  */
-// var config = {
-// 	host: 'localhost', // server name or IP address;
-// 	port: 5432,
-// 	database: 'criart',
-// 	user: 'postgres',
-// 	password: '123456'
-// };
+var config = {
+	host: 'localhost', // server name or IP address;
+	port: 5432,
+	database: 'criart',
+	user: 'postgres',
+	password: '123456'
+};
 
 /**
  * Heroku Base
  */
-var config = {
-	host: 'ec2-107-20-195-181.compute-1.amazonaws.com', // server name or IP address;
-	port: 5432,
-	database: 'd8emb3s8qqvb61',
-	user: 'lzsjaoysjdcmdk',
-	password: 'a07b7e3000e365934f5006accd93e5d8d30d7e39eee6b6b7475a44cda93a8dd1'
-};
+// var config = {
+// 	host: 'ec2-107-20-195-181.compute-1.amazonaws.com', // server name or IP address;
+// 	port: 5432,
+// 	database: 'd8emb3s8qqvb61',
+// 	user: 'lzsjaoysjdcmdk',
+// 	password: 'a07b7e3000e365934f5006accd93e5d8d30d7e39eee6b6b7475a44cda93a8dd1'
+// };
 
 const pool = new pg.Pool(config);
 
@@ -262,20 +262,19 @@ app.post('/projeto/deletar/itens', function (req, res) {
 		});
 });
 
-app.put('/projeto/editar/itens', function (req, res) {
-
-});
-
 app.put('/projeto/editar/:id', function (req, res) {
-	var projeto = req.body;
+	var projeto = req.body.projeto;
+	var itens = req.body.itensUpdate;
 	var id = req.params.id;
-	var updateProjeto = "UPDATE projetos SET ? WHERE id = " + id;
-	pool.query(updateProjeto, projeto, function (err, rows) {
-		if (err) throw err;
-		else {
-			res.send(true);
-		}
-	});
+	var updateProjeto = "UPDATE public.projetos SET nome = $1, descricao = $2, nomecliente = $3, telefonecliente = $4, enderecocliente = $5  WHERE id = " + id;
+	pool.query(updateProjeto, [projeto.nome, projeto.descricao, projeto.nomeCliente, projeto.telefoneCliente, projeto.enderecoCliente])
+		.then(function (data) {
+			deletarItensProjeto(id);
+			salvarItensProjeto(itens, id);
+			res.send(data.rows);
+		}).catch(function (err) {
+			console.log(err);
+		});
 });
 
 function replaceAll(string, token, newtoken) {
@@ -283,6 +282,43 @@ function replaceAll(string, token, newtoken) {
 		string = string.replace(token, newtoken);
 	}
 	return string;
+}
+
+function deletarItensProjeto(id) {
+	var query = '';
+	console.log('montando query para deletar itens do projeto')
+	query = mysql.format("DELETE FROM itensprojetos WHERE idprojeto = ?; ", id);
+	console.log(query);
+	pool.query(query) // find the user from id;
+		.then(function (data) {
+			console.log('itens excluidos');
+			return true;
+		}).catch(function (err) {
+			console.log(err);
+		});
+}
+
+function salvarItensProjeto(itens, idProjeto) {
+	var count = itens.length;
+	if (itens.length > 0) {
+		for (var i = 0; i < itens.length; i++) {
+			itens[i].idprojeto = idProjeto;
+		}
+	}
+	var Query = InsertQuery({
+		table: 'itensprojetos',
+		maxRow: count,
+		data: itens
+	})
+	sql = Query.next();
+	sql = replaceAll(sql, '`', '');
+	sql = replaceAll(sql, '´', '');
+	pool.query(sql).then(function (data) {
+		console.log('itens atualizados');
+	}).catch(function (err) {
+		console.log(err);
+	});
+	console.log(itens);
 }
 
 app.listen(app.get('port'), function () {

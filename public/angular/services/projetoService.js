@@ -8,7 +8,16 @@ myApp.service('projetoService', function ($http) {
         });
     }
 
+    function editarProjeto(projeto){
+        return $http({
+            method: 'PUT',
+            url: '/projeto/editar/'+projeto.id,
+            data: projeto
+        });
+    }
+
     return {
+        editarProjeto:editarProjeto,
         apagarItemProjeto: apagarItemProjeto
     };
 });
